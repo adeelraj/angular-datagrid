@@ -1,0 +1,15 @@
+.ng-datagrid
+  legend(data-ng-if="datagrid.title" data-ng-bind="datagrid.title")
+  table(data-ng-show="datagrid.isVisible()")
+    thead
+      tr
+        th(data-ng-repeat="item in datagrid.schema")
+          span(data-ng-bind="item.name")
+    tbody
+      tr(data-ng-repeat="row in datagrid.rows")
+        td(class="{{cell.getCss()}}" data-ng-repeat="cell in row" data-ng-click="cell.click()")
+          span(data-ng-show="cell.ishidden()" data-ng-if="!cell.editable" data-ng-bind="cell.getValue()")
+          input(data-ng-show="cell.ishidden()" data-ng-model="cell" data-ng-if="cell.editable" type="{{cell.type}}")
+  footer(data-ng-show="datagrid.isPaginable()")
+    octod-datagrid-pages.ng-pager
+    octod-datagrid-pager.ng-pager

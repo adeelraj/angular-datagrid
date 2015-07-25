@@ -1,0 +1,30 @@
+.ng-datagrid {
+  display: block;
+}
+.ng-datagrid .ng-pager {
+  float: left;
+  padding: 1em;
+}
+.ng-datagrid table,
+.ng-datagrid footer {
+  margin: 0;
+}
+.ng-datagrid table,
+.ng-datagrid footer {
+  width: 100%;
+}
+@media (min-width: 768px) {
+}
+@media (min-width: 1366px) {
+  .ng-datagrid .ng-pager {
+    margin: 0;
+  }
+  .ng-datagrid .ng-pager {
+    width: 33.333333333333336%;
+  }
+  .ng-datagrid .ng-pager + .ng-datagrid .ng-pager {
+    margin-left: 33.333333333333336%;
+  }
+}
+@media (min-width: 1600px) {
+}

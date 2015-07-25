@@ -1,0 +1,33 @@
+@require 'ride-css'
+
+$grid-cols = 12
+$grid-gutter = 0
+$grid-padding = 1em
+
+$xs = 'xs'
+$sm = 'sm'
+$md = 'md'
+$lg = 'lg'
+
+&
+  grid: $grid-cols, $grid-gutter, $grid-padding, $xs, true
+
+@media (min-width: 768px)
+  grid: $grid-cols, $grid-gutter, $grid-padding, $sm, true
+
+@media (min-width: 1366px)
+  grid: $grid-cols, $grid-gutter, $grid-padding, $md, true
+
+@media (min-width: 1600px)
+  grid: $grid-cols, $grid-gutter, $grid-padding, $lg, true
+
+.ng-datagrid
+  @extend $block
+  table
+    @extend $col-xs-12
+  footer
+    @extend $col-xs-12
+.ng-datagrid .ng-pager
+  @extend $col-xs, $col-md-4
+  & + &
+    @extend $offset-left-md-4
