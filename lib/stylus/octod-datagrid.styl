@@ -1,15 +1,8 @@
 @require 'ride-css'
-
-$grid-cols = 12
-$grid-gutter = 0
-$grid-padding = 1em
-
-$xs = 'xs'
-$sm = 'sm'
-$md = 'md'
-$lg = 'lg'
+@require 'theme'
 
 &
+  placeholders($xs)
   grid: $grid-cols, $grid-gutter, $grid-padding, $xs, true
 
 @media (min-width: 768px)
@@ -23,10 +16,21 @@ $lg = 'lg'
 
 .ng-datagrid
   @extend $block
+  legend
+    @extend $col-xs, $col-xs-12, $row
+    font-style: italic
   table
     @extend $col-xs-12
+    border-collapse: collapse
+  td
+    border: 1px solid $border-color
+    padding: $grid-padding
+  th
+    @extend $align-left-xs, .ng-datagrid td
+    color-scheme: $th-background, $th-color
   footer
     @extend $col-xs-12
+    
 .ng-datagrid .ng-pager
   @extend $col-xs, $col-md-4
   & + &

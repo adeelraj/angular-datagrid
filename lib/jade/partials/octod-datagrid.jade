@@ -1,15 +1,30 @@
-.ng-datagrid
+.ng-cloak.ng-datagrid
   legend(data-ng-if="datagrid.title" data-ng-bind="datagrid.title")
   table(data-ng-show="datagrid.isVisible()")
     thead
       tr
-        th(data-ng-repeat="item in datagrid.schema")
+        th(data-ng-class="item.getCss()" data-ng-repeat="item in datagrid.schema" data-od-style="item.style")
           span(data-ng-bind="item.name")
     tbody
       tr(data-ng-repeat="row in datagrid.rows")
-        td(class="{{cell.getCss()}}" data-ng-repeat="cell in row" data-ng-click="cell.click()")
-          span(data-ng-show="cell.ishidden()" data-ng-if="!cell.editable" data-ng-bind="cell.getValue()")
-          input(data-ng-show="cell.ishidden()" data-ng-model="cell" data-ng-if="cell.editable" type="{{cell.type}}")
+        td(
+          data-ng-class="cell.getCss()" 
+          data-ng-click="cell.click()" 
+          data-ng-repeat="cell in row.cells" 
+          data-od-style="item.style"
+          )
+          span(data-ng-hide="cell.ishidden()" data-ng-if="!cell.editable" data-ng-bind="cell.getValue()")
+          input(
+            data-ng-blur="cell.change()" 
+            data-ng-hide="cell.ishidden()" 
+            data-ng-if="cell.editable" 
+            data-ng-model="cell.model" 
+            data-od-enter="cell.change()" 
+            data-od-enter-kill
+            data-od-esc="cell.undo()"
+            type="{{cell.type}}"
+            )
   footer(data-ng-show="datagrid.isPaginable()")
-    octod-datagrid-pages.ng-pager
+    .ng-pager
+      a(data-ng-repeat="page in datagrid.pagination.getPagers()") {{page}}
     octod-datagrid-pager.ng-pager
