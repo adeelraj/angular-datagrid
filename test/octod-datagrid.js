@@ -348,6 +348,24 @@
     }
 
     /**
+     * returns if the passed pageNumber is the current one
+     * @param  {Number}  pageNumber
+     * @return {Boolean}
+     */
+    OctodPagination.prototype.isCurrentPage = function (pageNumber) {
+      return this.config.currentPage === pageNumber;
+    }
+
+    /**
+     * returns if the passed limit is the current one
+     * @param  {Number}  limit
+     * @return {Boolean}
+     */
+    OctodPagination.prototype.isCurrentLimit = function (limit) {
+      return this.config.limit === limit;
+    }
+
+    /**
      * sets a new pagination limit only if the limit is in pagers array
      * @param {Number} limit
      * @return {Boolean} true if the new limit is set
@@ -476,6 +494,24 @@
       this.pagination.getFirstPage();
       return this;
     };
+
+    /**
+     * wraps OctodPagination.prototype.isCurrentPage method
+     * @param  {Number}  pageNumber
+     * @return {Boolean}
+     */
+    OctodDatagrid.prototype.isCurrentPage = function (pageNumber) {
+      return this.pagination.isCurrentPage(pageNumber);
+    }
+
+    /**
+     * wraps OctodPagination.prototype.isCurrentLimit method
+     * @param  {Number}  limit
+     * @return {Boolean}
+     */
+    OctodDatagrid.prototype.isCurrentPager = function (limit) {
+      return this.pagination.isCurrentLimit(limit);
+    }
 
     /**
      * returns if the datagrid has pagination controls

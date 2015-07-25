@@ -26,6 +26,14 @@
           //- data-od-enter-kill
   footer(data-ng-show="datagrid.isPaginable()")
     .ng-pager
-      a(data-ng-click="datagrid.getPage(page)" data-ng-repeat="page in datagrid.getPages()") {{page}}
+      a.btn(
+        data-ng-class="{current: datagrid.isCurrentPage(page)}"
+        data-ng-click="datagrid.getPage(page)" 
+        data-ng-repeat="page in datagrid.getPages()"
+        ) {{page}}
     .ng-pager
-      a(data-ng-click="datagrid.setLimit(limit)" data-ng-repeat="limit in datagrid.getPagers()") {{limit}}
+      a.btn(
+        data-ng-class="{current: datagrid.isCurrentPager(limit)}"
+        data-ng-click="datagrid.setLimit(limit)" 
+        data-ng-repeat="limit in datagrid.getPagers()"
+        ) {{limit}}

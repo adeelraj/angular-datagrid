@@ -1,5 +1,6 @@
 'use strict';
 
+var autoprefixer = require('gulp-autoprefixer');
 var concat = require('gulp-concat');
 var gulp = require('gulp');
 var jade = require('gulp-jade');
@@ -46,6 +47,10 @@ gulp.task('stylus', function () {
   gulp.src('lib/stylus/octod-datagrid.styl')
   .pipe(stylus({
     use: [ridecss()]
+  }))
+  .pipe(autoprefixer({
+    browser: ['last 2 versions'],
+    cascade: false
   }))
   .pipe(gulp.dest(__dirname));
 });

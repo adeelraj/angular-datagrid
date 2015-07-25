@@ -3,19 +3,27 @@
 
 &
   placeholders($xs)
-  grid: $grid-cols, $grid-gutter, $grid-padding, $xs, true
+  grid($grid-cols, $grid-gutter, $grid-padding, $xs, true)
 
 @media (min-width: 768px)
-  grid: $grid-cols, $grid-gutter, $grid-padding, $sm, true
+  placeholders($sm)
+  grid($grid-cols, $grid-gutter, $grid-padding, $sm, true)
 
 @media (min-width: 1366px)
-  grid: $grid-cols, $grid-gutter, $grid-padding, $md, true
+  placeholders($md)
+  grid($grid-cols, $grid-gutter, $grid-padding, $md, true)
 
 @media (min-width: 1600px)
-  grid: $grid-cols, $grid-gutter, $grid-padding, $lg, true
+  placeholders($lg)
+  grid($grid-cols, $grid-gutter, $grid-padding, $lg, true)
+
+$padding
+  padding: $grid-padding
 
 .ng-datagrid
   @extend $block
+  footer
+    @extend $col-xs-12, $row
   legend
     @extend $col-xs, $col-xs-12, $row
     font-style: italic
@@ -24,14 +32,28 @@
     border-collapse: collapse
   td
     border: 1px solid $border-color
-    padding: $grid-padding
   th
-    @extend $align-left-xs, .ng-datagrid td
+    @extend $align-left-xs, $padding, .ng-datagrid td
     color-scheme: $th-background, $th-color
-  footer
-    @extend $col-xs-12
-    
-.ng-datagrid .ng-pager
+  td input
+    @extend $padding
+    border: 0 none
+    border-radius: 0
+  td input:focus
+    box-shadow: 0 0 5px 1px $input-focus
+  td span
+    @extend $block, $padding
+  .btn
+    @extend $align-center-xs
+    dont-select: true
+    min-width: 3em
+    padding: $grid-padding
+    text-decoration: underline
+  .btn.current
+    color-scheme: $btn-current-background, $btn-current-color
+    text-decoration: none
+
+.ng-pager
   @extend $col-xs, $col-md-4
   & + &
-    @extend $offset-left-md-4
+    @extend $align-right-md, $offset-left-md-4

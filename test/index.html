@@ -7,8 +7,21 @@
     <link rel="stylesheet" href="../octod-datagrid.css">
   </head>
   <body>
-    <h1 class="align-center">Octod Datagrid.</h1>
-    <octod-datagrid datagrid-title="main.grid.title" rows="main.grid.rows" schema="main.grid.schema" config="main.grid.config"></octod-datagrid>
+    <section class="demo">
+      <h1 class="align-center">Octod Datagrid.</h1>
+      <octod-datagrid datagrid-title="main.grid.title" rows="main.grid.rows" schema="main.grid.schema" config="main.grid.config"></octod-datagrid>
+    </section>
+    <style media="screen">
+      body{
+        background-color: #f9f6ff;
+      }
+      .demo{
+        background-color: white;
+        max-width: 1024px;
+        padding: 1em 2em;
+        margin: 0 auto;
+      }
+    </style>
     <script src="bower_components/angular/angular.js"></script>
     <script src="octod-datagrid.js"></script>
     <script src="app.js"></script>

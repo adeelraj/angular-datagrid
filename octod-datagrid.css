@@ -1,25 +1,31 @@
-.ng-datagrid {
+.ng-datagrid,
+.ng-datagrid td span {
   display: block;
+}
+.ng-datagrid .btn {
+  text-align: center;
 }
 .ng-datagrid th {
   text-align: left;
 }
 .ng-datagrid legend,
-.ng-datagrid .ng-pager {
+.ng-pager {
   float: left;
   padding: 1em;
 }
+.ng-datagrid footer,
 .ng-datagrid legend,
-.ng-datagrid table,
-.ng-datagrid footer {
+.ng-datagrid table {
   margin: 0;
 }
+.ng-datagrid footer,
 .ng-datagrid legend,
-.ng-datagrid table,
-.ng-datagrid footer {
+.ng-datagrid table {
   width: 100%;
 }
+.ng-datagrid footer:after,
 .ng-datagrid legend:after,
+.ng-datagrid footer:before,
 .ng-datagrid legend:before {
   clear: both;
   content: '';
@@ -28,17 +34,25 @@
 @media (min-width: 768px) {
 }
 @media (min-width: 1366px) {
-  .ng-datagrid .ng-pager {
+  .ng-pager + .ng-pager {
+    text-align: right;
+  }
+  .ng-pager {
     margin: 0;
   }
-  .ng-datagrid .ng-pager {
+  .ng-pager {
     width: 33.333333333333336%;
   }
-  .ng-datagrid .ng-pager + .ng-datagrid .ng-pager {
+  .ng-pager + .ng-pager {
     margin-left: 33.333333333333336%;
   }
 }
 @media (min-width: 1600px) {
+}
+.ng-datagrid th,
+.ng-datagrid td input,
+.ng-datagrid td span {
+  padding: 1em;
 }
 .ng-datagrid legend {
   font-style: italic;
@@ -48,10 +62,27 @@
 }
 .ng-datagrid td,
 .ng-datagrid th {
-  border: 1px solid $grey-300;
-  padding: 1em;
+  border: 1px solid #b5b5b5;
 }
 .ng-datagrid th {
   background-color: #e1e1e1;
   color: #313131;
+}
+.ng-datagrid td input {
+  border: 0 none;
+  border-radius: 0;
+}
+.ng-datagrid td input:focus {
+  box-shadow: 0 0 5px 1px #7cdddd;
+}
+.ng-datagrid .btn {
+  dont-select: true;
+  min-width: 3em;
+  padding: 1em;
+  text-decoration: underline;
+}
+.ng-datagrid .btn.current {
+  background-color: #147fdc;
+  color: #fff;
+  text-decoration: none;
 }

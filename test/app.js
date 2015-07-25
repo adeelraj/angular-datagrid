@@ -7,6 +7,14 @@
   ]);
 
   app.controller('TestController', function ($filter) {
+    var controller = this;
+
+    var Row = function (value) {
+      this.key1 = 'Field 1:'+ value;
+      this.key2 = new Date;
+      this.key3 = Math.floor(Math.random() * ((3 - 1) + 1));
+    }
+
     this.grid = {};
 
     this.grid.rows = (function (Row) {
@@ -17,20 +25,24 @@
       return rows;
     })(Row);
 
-    var foo = {bar: false};
+    this.array = [
+      'often',
+      'sometimes',
+      'never'
+    ];
 
     this.grid.schema = [{
-      css: 'text-italic',
+      css: 'col-md-2',
       key: 'key1',
       name: 'First field',
       style: 'color: #6b8e9e;'
     }, {
+      css: 'col-md-2',
       change: function () {
         this.editable = false;
       },
       click: function () {
-        // this.editable = true;
-        foo.bar = true
+        this.editable = true;
       },
       hide: function (){
         // return Math.random() * 10000 > 500;
@@ -39,16 +51,20 @@
       key: 'key2',
       name: 'Second field',
       value: function (value) {
-        return $filter('date')(value, 'dd-MM-yyyy');
+        // return $filter('date')(value, 'dd-MM-yyyy');
+        return !!value
+      },
+      type: 'checkbox'
+    }, {
+      css: 'col-md-2',
+      key: 'key3',
+      name: 'third field',
+      value: function (value) {
+        return controller.array[value] || 'none';
       }
     }];
 
-    this.grid.title = 'Testing out this datagrid.'
-
-    function Row (value) {
-      this.key1 = 'Field 1:'+ value;
-      this.key2 = new Date;
-    }
+    this.grid.title = 'Testing out this datagrid.';
   });
 
   app.directive('body', function () {
