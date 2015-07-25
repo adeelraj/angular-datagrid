@@ -22,8 +22,8 @@
             data-od-esc="cell.undo()"
             type="{{cell.type}}"
             )
-            //- data-od-enter="cell.change()" 
-            //- data-od-enter-kill
+          //- data-od-enter="cell.change()" 
+          //- data-od-enter-kill
   footer(data-ng-show="datagrid.isPaginable()")
     .ng-pager
       a(data-ng-click="datagrid.getPage(page)" data-ng-repeat="page in datagrid.getPages()") {{page}}

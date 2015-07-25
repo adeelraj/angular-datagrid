@@ -301,8 +301,9 @@
       var pages = [];
       if (!this.hasPages()) return pages;
       if (pageNumber) this.config.currentPage = pageNumber;
-      while (pages.length < this.config.limit) {
-        pages.push(this.rows[this.config.currentPage + pages.length]);
+      for (var i = 0; i < this.config.limit; i++) {
+        var index = ((this.config.currentPage - 1) * this.config.limit) + pages.length;
+        if (this.rows[index]) pages.push(this.rows[index]);
       }
       return pages;
     }
@@ -353,6 +354,7 @@
      */
     OctodPagination.prototype.setLimit = function (limit) {
       if (!limit in this.config.pagers) return false;
+      this.config.currentPage = 1;
       this.config.limit = limit;
       return true;
     }
@@ -421,6 +423,22 @@
     OctodDatagrid.Row = OctodRow;
 
     /**
+     * wrapper for OctodPagination.prototype.getFirstPage
+     * @return {Undefined}
+     */
+    OctodDatagrid.prototype.getFirstPage = function () {
+      this.pagination.getFirstPage();
+    }
+
+    /**
+     * wrapper for OctodPagination.prototype.getLastPage
+     * @return {Undefined}
+     */
+    OctodDatagrid.prototype.getLastPage = function () {
+      this.pagination.getLastPage();
+    }
+
+    /**
      * wrapping and managing OctodPagination.prototype.getPage
      * returns a set of paginated rows
      * @param  {number} pageNumber the pageNumber you are requiring
@@ -480,6 +498,7 @@
      * @return {Undefined}
      */
     OctodDatagrid.prototype.redraw = function () {
+      this.rows = [];
       this.rowsCache.forEach(function (rowObject) {
         var rowInstance = new OctodRow(rowObject, this.schema);
         rowInstance.buildCells();
