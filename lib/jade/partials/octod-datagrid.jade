@@ -6,7 +6,7 @@
         th(data-ng-class="item.getCss()" data-ng-repeat="item in datagrid.schema" data-od-style="item.style")
           span(data-ng-bind="item.name")
     tbody
-      tr(data-ng-repeat="row in datagrid.rows")
+      tr(data-ng-repeat="row in datagrid.getPage()")
         td(
           data-ng-class="cell.getCss()" 
           data-ng-click="cell.click()" 
@@ -19,12 +19,13 @@
             data-ng-hide="cell.ishidden()" 
             data-ng-if="cell.editable" 
             data-ng-model="cell.model" 
-            data-od-enter="cell.change()" 
-            data-od-enter-kill
             data-od-esc="cell.undo()"
             type="{{cell.type}}"
             )
+            //- data-od-enter="cell.change()" 
+            //- data-od-enter-kill
   footer(data-ng-show="datagrid.isPaginable()")
     .ng-pager
-      a(data-ng-repeat="page in datagrid.pagination.getPagers()") {{page}}
-    octod-datagrid-pager.ng-pager
+      a(data-ng-click="datagrid.getPage(page)" data-ng-repeat="page in datagrid.getPages()") {{page}}
+    .ng-pager
+      a(data-ng-click="datagrid.setLimit(limit)" data-ng-repeat="limit in datagrid.getPagers()") {{limit}}

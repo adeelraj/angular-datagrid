@@ -59,6 +59,7 @@
   });
 
   app.config(function ($octodDatagridProvider) {
+    $octodDatagridProvider.debug(true);
     $octodDatagridProvider.setPartialsFolder('/partials')
   })
 
