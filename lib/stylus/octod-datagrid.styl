@@ -19,13 +19,16 @@
 
 $padding
   padding: $grid-padding
+  /&.tight &
+    padding: ($grid-padding / 2)
 
 .ng-datagrid
   @extend $block
   footer
     @extend $col-xs-12, $row
   legend
-    @extend $col-xs, $col-xs-12, $row
+    @extend $padding
+    color: $legend-color
     font-style: italic
   table
     @extend $col-xs-12
@@ -43,17 +46,28 @@ $padding
     box-shadow: 0 0 5px 1px $input-focus
   td span
     @extend $block, $padding
+
+.ng-datagrid.small-cells
+  td input
+    padding: ($grid-padding / 2)
+  td span
+    @extends .ng-datagrid.small-cells td input
+  th
+    @extends .ng-datagrid.small-cells td input
   .btn
-    @extend $align-center-xs
-    dont-select: true
-    min-width: 3em
-    padding: $grid-padding
-    text-decoration: underline
-  .btn.current
-    color-scheme: $btn-current-background, $btn-current-color
-    text-decoration: none
+    @extends .ng-datagrid.small-cells td input
+
 
 .ng-pager
   @extend $col-xs, $col-md-4
   & + &
     @extend $align-right-md, $offset-left-md-4
+  .btn
+    @extend $align-center-xs
+    min-width: 3em
+    padding: $grid-padding
+    text-decoration: underline
+    user-select: none
+  .btn.current
+    color-scheme: $btn-current-background, $btn-current-color
+    text-decoration: none

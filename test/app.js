@@ -10,16 +10,21 @@
     var controller = this;
 
     var Row = function (value) {
-      this.key1 = 'Field 1:'+ value;
+      this.key1 = 'Row number: '+ (value + 1);
       this.key2 = new Date;
       this.key3 = Math.floor(Math.random() * ((3 - 1) + 1));
+      this.key4 = Math.floor(Math.random() * ((4 - 1) + 1));
     }
 
     this.grid = {};
 
+    this.grid.config = {
+      smallCells: true
+    }
+
     this.grid.rows = (function (Row) {
       var rows = [];
-      while (rows.length < 41) {
+      while (rows.length < 60) {
         rows.push(new Row(rows.length));
       }
       return rows;
@@ -31,11 +36,17 @@
       'never'
     ];
 
+    this.arrayBtns = [
+      'btn info',
+      'btn success',
+      'btn danger',
+      'btn error'
+    ];
+
     this.grid.schema = [{
       css: 'col-md-2',
       key: 'key1',
-      name: 'First field',
-      style: 'color: #6b8e9e;'
+      name: 'First field'
     }, {
       css: 'col-md-2',
       change: function () {
@@ -62,6 +73,14 @@
       value: function (value) {
         return controller.array[value] || 'none';
       }
+    }, {
+      childCss: function () {
+        var css = controller.arrayBtns[this.getValue()];
+        return css ? 'btn '+ css : '';
+      },
+      key: 'key4',
+      name: 'Variable css',
+      type: 'button'
     }];
 
     this.grid.title = 'Testing out this datagrid.';

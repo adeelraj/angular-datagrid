@@ -116,8 +116,9 @@
      */
     function OctodCell (config, row) {
       this.changeCallback = config.change || noop;
-      this.css = config.css;
       this.clickCallback = config.click || noop;
+      this.css = config.css;
+      this.childCss = config.childCss;
       this.editable = config.editable;
       this.hide = config.hide || noop;
       this.key = config.key;
@@ -154,12 +155,20 @@
     }
 
     /**
+     * returns child element css or calls the css function
+     * @return {String}
+     */
+    OctodCell.prototype.getChildCss = function () {
+      return typeof this.childCss === 'function' ? this.childCss.call(this) : this.childCss;
+    }
+
+    /**
      * sets model and valueCache
      * returns value or calls the value function
      * @return {Any}
      */
     OctodCell.prototype.getValue = function () {
-      this.model = this.valueCache = typeof this.value === 'function' ? this.value() : this.value;
+      this.model = this.valueCache = typeof this.value === 'function' ? this.value.call(this) : this.value;
       return this.model;
     }
 
@@ -184,7 +193,6 @@
      * @return {Undefined}
      */
     OctodCell.prototype.undo = function () {
-      console.log(123)
       this.editable = false;
       this.model = this.value;
     }

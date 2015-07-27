@@ -3,8 +3,10 @@
   <head>
     <meta charset="utf-8">
     <title>Testing out datagrid</title>
+    <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="../bower_components/nostrap/nostrap.min.css">
     <link rel="stylesheet" href="../octod-datagrid.css">
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' name='viewport' />
   </head>
   <body>
     <section class="demo">
@@ -20,6 +22,26 @@
         max-width: 1024px;
         padding: 1em 2em;
         margin: 0 auto;
+      }
+      td .btn {
+        border-radius: 4em;
+        color: white;
+        margin: 0 auto;
+        max-width: 8em;
+        text-align: center;
+      }
+      .danger {
+        background-color: #dd2412;
+      }
+      .info {
+        background-color: #2243b5;
+      }
+      .success {
+        background-color: #2c7838;
+      }
+      .error {
+        background-color: #ffc805;
+        color: black;
       }
     </style>
     <script src="bower_components/angular/angular.js"></script>
