@@ -46,6 +46,8 @@ $padding
     box-shadow: 0 0 5px 1px $input-focus
   td span
     @extend $block, $padding
+  .dont-select
+    user-select: none
 
 .ng-datagrid.small-cells
   td input
@@ -59,15 +61,15 @@ $padding
 
 
 .ng-pager
-  @extend $col-xs, $col-md-4
+  @extend $col-xs, $col-md-6
+  font-size: .8em
   & + &
-    @extend $align-right-md, $offset-left-md-4
+    @extend $align-right-md
   .btn
-    @extend $align-center-xs
+    @extend $align-center-xs, .ng-datagrid .dont-select
     min-width: 3em
     padding: $grid-padding
     text-decoration: underline
-    user-select: none
   .btn.current
     color-scheme: $btn-current-background, $btn-current-color
     text-decoration: none

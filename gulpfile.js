@@ -36,6 +36,7 @@ gulp.task('make-datagrid', function () {
     'lib/services/Cell.js',
     'lib/services/Row.js',
     'lib/services/Pagination.js',
+    'lib/services/Limiter.js',
     'lib/services/Datagrid.js',
     'lib/$wrapper-end.js'
   ])

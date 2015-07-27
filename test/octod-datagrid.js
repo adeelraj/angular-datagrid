@@ -127,6 +127,8 @@
       this.style = config.style;
       this.type = config.type;
       this.value = null;
+      // accessible when clicking
+      this.$row = row;
     }
 
     /**
@@ -134,7 +136,7 @@
      * @return {Undefined}
      */
     OctodCell.prototype.change = function () {
-      this.changeCallback.call(this);
+      this.changeCallback.call(this, this.$row);
       this.updateValue();
     }
 
@@ -143,7 +145,7 @@
      * @return {Undefined}
      */
     OctodCell.prototype.click = function () {
-      this.clickCallback.call(this);
+      this.clickCallback.call(this, this.$row);
     }
 
     /**
@@ -151,7 +153,7 @@
      * @return {String}
      */
     OctodCell.prototype.getCss = function () {
-      return typeof this.css === 'function' ? this.css.call(this) : this.css;
+      return typeof this.css === 'function' ? this.css.call(this, this.$row) : this.css;
     }
 
     /**
@@ -159,7 +161,15 @@
      * @return {String}
      */
     OctodCell.prototype.getChildCss = function () {
-      return typeof this.childCss === 'function' ? this.childCss.call(this) : this.childCss;
+      return typeof this.childCss === 'function' ? this.childCss.call(this, this.$row) : this.childCss;
+    }
+
+    /**
+     * returns cell instance style
+     * @return {Any}
+     */
+    OctodCell.prototype.getStyle = function () {
+      return this.style;
     }
 
     /**
@@ -168,7 +178,7 @@
      * @return {Any}
      */
     OctodCell.prototype.getValue = function () {
-      this.model = this.valueCache = typeof this.value === 'function' ? this.value.call(this) : this.value;
+      this.model = this.valueCache = typeof this.value === 'function' ? this.value.call(this, this.$row) : this.value;
       return this.model;
     }
 
@@ -177,7 +187,7 @@
      * @return {Boolean}
      */
     OctodCell.prototype.ishidden = function () {
-      return this.hide();
+      return this.hide.call(this, this.$row);
     }
 
     /**
@@ -398,7 +408,26 @@
   })
 
 
-  .service('OctodDatagrid', ['OctodRow', 'OctodCell', 'OctodPagination', function (OctodRow, OctodCell, OctodPagination) {
+  .service('OctodLimiter', function () {
+    /**
+     * OctodLimiter constructor
+     * @param {Number} current      the current index
+     * @param {Number} count        the number of elements available for pagination
+     * @param {Number} limit        the number of visible elements to display
+     */
+    function OctodLimiter (current, count, limit) {
+      this.count = count;
+      this.current = current;
+      this.limit = limit;
+      this.beforeAfter = Math.floor(this.limit / (limit % 2 == 0 ? 2 : 3));
+    };
+
+    // returning constructor
+    return OctodLimiter;
+  })
+
+
+  .service('OctodDatagrid', ['OctodRow', 'OctodCell', 'OctodPagination', 'OctodLimiter', function (OctodRow, OctodCell, OctodPagination, OctodLimiter) {
     /**
      * Config defaults
      * @private
@@ -409,6 +438,12 @@
         currentPage: 1,
         limit: 10,
         pagers: [10, 20, 30],
+        visible: true
+      },
+      paginator: {
+        currentPage: 1,
+        limit: 5,
+        pagers: [5],
         visible: true
       },
       visible: true
@@ -498,8 +533,10 @@
     OctodDatagrid.prototype.init = function () {
       this.redraw();
       this.pagination = new OctodPagination(this.rows, this.config.pagination);
-      this.pagination.getPages();
       this.pagination.getFirstPage();
+      this.limiter = new OctodPagination(this.pagination.getPages(), this.config.paginator);
+      this.limiter.getPages();
+      this.limiter.getFirstPage();
       return this;
     };
 

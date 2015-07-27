@@ -3,7 +3,7 @@
   table(data-ng-show="datagrid.isVisible()")
     thead
       tr
-        th(data-ng-class="item.getCss()" data-ng-repeat="item in datagrid.schema" data-od-style="item.style")
+        th(data-ng-class="item.getCss()" data-ng-repeat="item in datagrid.schema" data-od-style="item.getStyle()")
           span(data-ng-bind="item.name")
     tbody
       tr(data-ng-repeat="row in datagrid.getPage()")
@@ -11,7 +11,7 @@
           data-ng-class="cell.getCss()" 
           data-ng-click="cell.click()" 
           data-ng-repeat="cell in row.cells" 
-          data-od-style="item.style")
+          data-od-style="item.getStyle()")
           span(data-ng-hide="cell.ishidden()" data-ng-if="!cell.editable" data-ng-bind="cell.getValue()" data-ng-class="cell.getChildCss()")
           label(data-ng-class="cell.getChildCss()" data-ng-hide="cell.ishidden()" data-ng-if="cell.editable")
             input(
@@ -31,11 +31,13 @@
           //- data-od-enter-kill
   footer(data-ng-show="datagrid.isPaginable()")
     .ng-pager
+      a.btn(data-ng-click="datagrid.getFirstPage()") First
       a.btn(
         data-ng-class="{current: datagrid.isCurrentPage(page)}"
         data-ng-click="datagrid.getPage(page)" 
         data-ng-repeat="page in datagrid.getPages()"
         ) {{page}}
+      a.btn(data-ng-click="datagrid.getLastPage()") Last
     .ng-pager
       a.btn(
         data-ng-class="{current: datagrid.isCurrentPager(limit)}"

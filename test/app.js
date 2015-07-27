@@ -39,8 +39,8 @@
     this.arrayBtns = [
       'btn info',
       'btn success',
-      'btn danger',
-      'btn error'
+      'btn warning',
+      'btn danger'
     ];
 
     this.grid.schema = [{
@@ -55,17 +55,15 @@
       click: function () {
         this.editable = true;
       },
-      hide: function (){
+      hide: function () {
         // return Math.random() * 10000 > 500;
         // return foo.bar
       },
       key: 'key2',
       name: 'Second field',
       value: function (value) {
-        // return $filter('date')(value, 'dd-MM-yyyy');
-        return !!value
-      },
-      type: 'checkbox'
+        return $filter('date')(value, 'dd-MM-yyyy');
+      }
     }, {
       css: 'col-md-2',
       key: 'key3',
@@ -74,9 +72,13 @@
         return controller.array[value] || 'none';
       }
     }, {
+      css: 'dont-select align-center',
       childCss: function () {
         var css = controller.arrayBtns[this.getValue()];
         return css ? 'btn '+ css : '';
+      },
+      click: function (row) {
+        this.value < controller.arrayBtns.length -1 ? this.value ++ : (this.value = 0);
       },
       key: 'key4',
       name: 'Variable css',

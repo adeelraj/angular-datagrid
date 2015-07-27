@@ -36,10 +36,7 @@
     margin: 0;
   }
   .ng-pager {
-    width: 33.333333333333336%;
-  }
-  .ng-pager + .ng-pager {
-    margin-left: 33.333333333333336%;
+    width: 50%;
   }
 }
 @media (min-width: 1600px) {
@@ -78,20 +75,26 @@
 .ng-datagrid td input:focus {
   box-shadow: 0 0 5px 1px #7cdddd;
 }
+.ng-datagrid .dont-select,
+.ng-pager .btn {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 .ng-datagrid.small-cells td input,
 .ng-datagrid.small-cells td span,
 .ng-datagrid.small-cells th,
 .ng-datagrid.small-cells .btn {
   padding: 0.5em;
 }
+.ng-pager {
+  font-size: 0.8em;
+}
 .ng-pager .btn {
   min-width: 3em;
   padding: 1em;
   text-decoration: underline;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 .ng-pager .btn.current {
   background-color: #147fdc;
