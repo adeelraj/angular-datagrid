@@ -78,7 +78,7 @@
         return css ? 'btn '+ css : '';
       },
       click: function (row) {
-        this.value < controller.arrayBtns.length -1 ? this.value ++ : (this.value = 0);
+        row.key4 = this.value < controller.arrayBtns.length -1 ? this.value ++ : (this.value = 0);
       },
       key: 'key4',
       name: 'Variable css',
@@ -97,7 +97,7 @@
 
   app.config(function ($octodDatagridProvider) {
     $octodDatagridProvider.debug(true);
-    $octodDatagridProvider.setPartialsFolder('/partials')
+    $octodDatagridProvider.setPartialsFolder('/partials');
   })
 
 }).call(this);

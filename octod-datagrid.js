@@ -432,7 +432,7 @@
     function addItemsAfter (itemsSet, expectedLength) {
       var array = [].concat(itemsSet);
       for (var i = itemsSet.length; i <= expectedLength; i++) array.push(i);
-      return itemsSet;
+      return array;
     }
 
     /**
@@ -446,7 +446,7 @@
       var array = [].concat(itemsSet);
       for (var i = itemsSet.length; i <= expectedLength; i--)
         if (i > 0) array.push(i);
-      return itemsSet;
+      return array;
     }
 
     /**
@@ -479,6 +479,15 @@
       var items = [];
       for (var i = this.current; i > this.current - this.beforeAfter; i--) items.push(i);
       return items;
+    }
+
+    /**
+     * returns the range of items selectable
+     * @return {Array} the range
+     */
+    OctodLimiter.prototype.getRange = function () {
+      var range = [];
+      return range;
     }
 
     /**

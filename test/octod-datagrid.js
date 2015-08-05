@@ -8,9 +8,9 @@
 
   .directive('octodDatagrid', ['OctodDatagrid', '$octodDatagrid', function (OctodDatagrid, $octodDatagrid) {
     return {
-      controller: ['$scope', function ($scope) {
-        this.datagrid = $scope.$new();
-      }],
+      // controller: ['$scope', function ($scope) {
+      //   this.datagrid = $scope.$new();
+      // }],
       controllerAs: 'datagrid',
       link: function ($scope, $element, $attrs) {
         var config = $attrs.config ? $scope.$eval($attrs.config) : {};
@@ -432,7 +432,7 @@
     function addItemsAfter (itemsSet, expectedLength) {
       var array = [].concat(itemsSet);
       for (var i = itemsSet.length; i <= expectedLength; i++) array.push(i);
-      return itemsSet;
+      return array;
     }
 
     /**
@@ -446,7 +446,7 @@
       var array = [].concat(itemsSet);
       for (var i = itemsSet.length; i <= expectedLength; i--)
         if (i > 0) array.push(i);
-      return itemsSet;
+      return array;
     }
 
     /**
