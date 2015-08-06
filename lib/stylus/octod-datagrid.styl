@@ -43,11 +43,14 @@ $padding
     border: 0 none
     border-radius: 0
   td input:focus
-    box-shadow: 0 0 5px 1px $input-focus
+    box-shadow: 0 0 5px 1px $input-focus inset
   td span
     @extend $block, $padding
   .dont-select
     user-select: none
+
+.ng-datagrid.fixed-layout table
+  table-layout: fixed
 
 .ng-datagrid.small-cells
   td input
