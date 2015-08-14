@@ -75,8 +75,18 @@
 
 
   .provider('$octodDatagrid', function () {
+    /**
+     * configuration Object
+     * @static
+     * @type {Object}
+     */
     var config = {
       debug: false,
+      locale: {
+        __default: {
+
+        }
+      },
       partials: {
         path: ''
       }
@@ -90,13 +100,23 @@
       return {
         /**
          * returns debug querystring. A simple hack to avoid caching
+         * @static
          * @return {String}
          */
         getDebugQuerystring: function () {
           return config.debug ? '?datetime='+ Date.now() : '';
         },
         /**
+         * returns localized object if present
+         * @static
+         * @return {Object}
+         */
+        getLocale: function (localeName) {
+          return config.locale[localeName] ? config.locale[localeName] : config.locale.__default;
+        },
+        /**
          * the partials path. Useful to set where the directive should pick the view
+         * @static
          * @type {String}
          */
         partialsPath: config.partials.path
@@ -105,6 +125,7 @@
 
     /**
      * sets debugmode on/off
+     * @static
      * @param  {Boolean} debugmode
      * @return {Undefined}
      */
@@ -113,8 +134,20 @@
     }
 
     /**
+     * adds a localization object
+     * @static
+     * @param  {String} localeName the i18n locale name
+     * @param  {Object:string} config     a set of keys: translations
+     * @return {Undefined}
+     */
+    this.localeAdd = function (localeName, config) {
+      config.locale[localeName] = config;
+    }
+
+    /**
      * sets the partialsPath parameter used by $get.partialsPath
-     * @param {String} folder 
+     * @static
+     * @param {String} folder
      */
     this.setPartialsFolder = function (folder) {
       if (typeof folder === 'string') config.partials.path = folder;
@@ -299,12 +332,22 @@
 
 
   .service('OctodPagination', function () {
+    /**
+     * returns the type
+     * @param  {Any} object the variable you wish to check
+     * @return {String}        stringed type
+     * @example typeOf(/[0-9]/) === [object RegExp]
+     */
     function typeOf (object) {
       return Object.prototype.toString.call(object);
     }
 
+    /**
+     * OctodPagination constructor
+     * @param {Array} rows   the rows set
+     * @param {Object} config pagination config
+     */
     function OctodPagination (rows, config) {
-
       if (!typeOf(rows) === '[object Array]')
         throw new TypeError('OctodPagination requires a rows:[object Array], provided'+ typeOf(rows));
 
@@ -432,9 +475,42 @@
   .service('OctodLimiter', function () {
     /**
      * OctodLimiter constructor
+     * @param {Array}   pagers    the set of pagers
+     * @param {Object}  config    paginator config object
      */
-    function OctodLimiter () {
+    function OctodLimiter (pagers, config) {
+      this.config = config || {};
+      this.pagers = pagers || [];
+      this.pagersVisible = [1, 3, 5];
     };
+
+    /**
+     * returns if the passed page is inside the acceptable range of pagers
+     * @private
+     * @param  {Number} pageNumber page number
+     * @return {Boolean}
+     */
+    function inRange (pageNumber) {
+      return this.pagersVisible.filter(function (pager) { return pager === pageNumber; }).length > 0;
+    };
+
+    /**
+     * returns available range
+     * @private
+     * @return {Array}
+     */
+    function getRange () {
+      this.range = [];
+    }
+
+    /**
+     * returns if the given page number is in range or not
+     * @param  {Number} pageNumber the page number
+     * @return {Boolean}
+     */
+    OctodLimiter.prototype.inRange = function (pageNumber) {
+      return inRange.call(this, pageNumber);
+    }
 
     // returning constructor
     return OctodLimiter;
@@ -482,6 +558,13 @@
      * @type {OctodCell}
      */
     OctodDatagrid.Cell = OctodCell;
+
+    /**
+     * Limiter constructor
+     * @static
+     * @type {OctodLimiter}
+     */
+    OctodDatagrid.Limiter = OctodLimiter;
 
     /**
      * Pagination constructor
@@ -548,8 +631,18 @@
       this.redraw();
       this.pagination = new OctodPagination(this.rows, this.config.pagination);
       this.pagination.getFirstPage();
+      this.paginator = new OctodLimiter(this.getPagers(), this.config.paginator);
       return this;
     };
+
+    /**
+     * returns if the passed page number is in range
+     * @param  {Number} pageNumber the page number
+     * @return {Boolean}
+     */
+    OctodDatagrid.prototype.inRange = function (pageNumber) {
+      return this.paginator.inRange(pageNumber);
+    }
 
     /**
      * wraps OctodPagination.prototype.isCurrentPage method

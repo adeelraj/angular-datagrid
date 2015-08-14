@@ -24,24 +24,15 @@
 
     this.grid.rows = (function (Row) {
       var rows = [];
-      while (rows.length < 60) {
+      while (rows.length < 600) {
         rows.push(new Row(rows.length));
       }
       return rows;
     })(Row);
 
-    this.array = [
-      'often',
-      'sometimes',
-      'never'
-    ];
+    this.array = 'often,sometimes,never'.split(',');
 
-    this.arrayBtns = [
-      'btn info',
-      'btn success',
-      'btn warning',
-      'btn danger'
-    ];
+    this.arrayBtns = 'btn info,btn success,btn warning,btn danger'.split(',');
 
     this.grid.schema = [{
       css: 'col-md-2',
