@@ -8,6 +8,15 @@
 
   app.controller('TestController', function ($filter) {
     var controller = this;
+    var counter = 1;
+
+    function makerows(number) {
+      var rows = [];
+      while (rows.length < number) {
+        rows.push(new Row(rows.length));
+      }
+      return rows;
+    }
 
     var Row = function (value) {
       this.key1 = 'Row number: '+ (value + 1);
@@ -22,13 +31,7 @@
       smallCells: true
     }
 
-    this.grid.rows = (function (Row) {
-      var rows = [];
-      while (rows.length < 600) {
-        rows.push(new Row(rows.length));
-      }
-      return rows;
-    })(Row);
+    this.grid.rows = makerows(600);
 
     this.array = 'often,sometimes,never'.split(',');
 
@@ -37,7 +40,11 @@
     this.grid.schema = [{
       css: 'col-md-2',
       key: 'key1',
-      name: 'First field'
+      name: 'First field',
+      click: function () {
+        controller.grid.rows = makerows(counter);
+        counter++;
+      }
     }, {
       css: 'col-md-2',
       change: function () {

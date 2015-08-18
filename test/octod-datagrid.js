@@ -18,6 +18,11 @@
         var schema = $attrs.schema ? $scope.$eval($attrs.schema) : [];
         $scope.datagrid = new OctodDatagrid(rows, schema, config);
         $scope.datagrid.title = $attrs.datagridTitle ? $scope.$eval($attrs.datagridTitle) : false;
+        if ($attrs.rows) {
+          $scope.$watch($attrs.rows, function () {
+            $scope.datagrid = new OctodDatagrid($scope.$eval($attrs.rows), schema, config);
+          });
+        }
       },
       restrict: 'E',
       replace: true,
@@ -84,7 +89,9 @@
       debug: false,
       locale: {
         __default: {
-
+          browsingPage: 'Browsing page',
+          browsingPageOf: 'of',
+          totalPages: 'total pages.'
         }
       },
       partials: {
@@ -570,13 +577,18 @@
   })
 
 
-  .service('OctodDatagrid', ['OctodRow', 'OctodCell', 'OctodPagination', 'OctodLimiter', function (OctodRow, OctodCell, OctodPagination, OctodLimiter) {
+  .service('OctodDatagrid', ['$octodDatagrid', 'OctodRow', 'OctodCell', 'OctodPagination', 'OctodLimiter', function ($octodDatagrid, OctodRow, OctodCell, OctodPagination, OctodLimiter) {
     /**
      * Config defaults
      * @private
      * @type {Object}
      */
     var __config = {
+      ajaxPagination: false,
+      http: {
+        get: ''
+      },
+      locale: '__default',
       pagination: {
         currentPage: 1,
         limit: 10,
@@ -588,6 +600,8 @@
         limit: 5,
         visible: true
       },
+      showStats: true,
+      translations: {},
       visible: true
     };
 
@@ -602,6 +616,7 @@
       this.rowsCache = rows;
       this.schema = schema;
       this.config = angular.extend(__config, config);
+      this.config.translations = $octodDatagrid.getLocale(config.locale);
     };
 
     /**
@@ -680,6 +695,23 @@
     }
 
     /**
+     * returns rowsCache
+     * @return {Array}
+     */
+    OctodDatagrid.prototype.getRowsAll = function () {
+      return this.rowsCache;
+    }
+
+    /**
+     * returns translated string
+     * @param  {string} key the translation key
+     * @return {string}
+     */
+    OctodDatagrid.prototype.getTranslated = function (key) {
+      return this.config.translations[key] || '';
+    }
+
+    /**
      * inits OctodDatagrid
      * @return {OctodDatagrid}
      */
@@ -735,6 +767,22 @@
     }
 
     /**
+     * outputs current page number
+     * @return {Number}
+     */
+    OctodDatagrid.prototype.pageDisplay = function () {
+      return this.config.pagination.currentPage;
+    }
+
+    /**
+     * outputs total pages number
+     * @return {Number}
+     */
+    OctodDatagrid.prototype.pageDisplayTotal = function () {
+      return this.pagination.getPageCount();
+    }
+
+    /**
      * redraws datagrid rows
      * @return {Undefined}
      */
@@ -774,6 +822,14 @@
       if (Object.prototype.toString.call(schemaObject) !== '[object Object]') return;
       this.schema = schemaObject;
       this.init();
+    }
+
+    /**
+     * returns if the stats are visible or not
+     * @return {Boolean}
+     */
+    OctodDatagrid.prototype.showStats = function () {
+      return this.config.showStats;
     }
 
     // returns OctodDatagridInit constructor

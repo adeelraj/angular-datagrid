@@ -3,7 +3,7 @@
   table(data-ng-show="datagrid.isVisible()")
     thead
       tr
-        th(data-ng-class="item.getCss()" data-ng-repeat="item in datagrid.schema" data-od-style="item.getStyle()")
+        th(data-ng-class="item.css" data-ng-repeat="item in datagrid.schema" data-od-style="item.getStyle()")
           span(data-ng-bind="item.name")
     tbody
       tr(data-ng-repeat="row in datagrid.getPage()")
@@ -46,3 +46,9 @@
         data-ng-click="datagrid.setLimit(limit)" 
         data-ng-repeat="limit in datagrid.getPagers()"
         ) {{limit}}
+    .ng-stats(data-ng-if="datagrid.showStats()")
+      .stat {{datagrid.getTranslated('browsingPage')}} 
+        strong {{datagrid.pageDisplay()}} 
+        | {{datagrid.getTranslated('browsingPageOf')}} 
+        strong {{datagrid.pageDisplayTotal()}} 
+        | {{datagrid.getTranslated('totalPages')}}
