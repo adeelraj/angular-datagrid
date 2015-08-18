@@ -481,7 +481,7 @@
     function OctodLimiter (pagers, config) {
       this.config = config || {};
       this.pagers = pagers || [];
-      this.pagersVisible = [1, 3, 5];
+      this.pagersVisible = [];
     };
 
     /**
@@ -500,7 +500,51 @@
      * @return {Array}
      */
     function getRange () {
-      this.range = [];
+      var limit = Math.floor(this.config.limit / 2);
+      var isEven = this.config.limit % 2 === 0;
+      var currentPage = this.config.currentPage;
+      var firstpage = currentPage - limit;
+      var lastpage = currentPage + limit;
+      if (isEven) lastpage = lastpage - 1;
+      if (firstpage <= 1) {
+        firstpage = 1;
+        lastpage = this.config.limit;
+      }
+      if (lastpage >= pagerLast.call(this)) {
+        lastpage = pagerLast.call(this);
+        firstpage = lastpage - (limit * 2);
+        if (isEven) firstpage = firstpage + 1;
+      }
+      this.pagersVisible = [];
+      return this.pagersVisible = this.pagers.filter(function (pager) {
+        return pager >= firstpage && pager <= lastpage;
+      }, this);
+    };
+
+    /**
+     * returns first pager
+     * @private
+     * @return {Number}
+     */
+    function pagerFirst () {
+      return this.pagers[0];
+    }
+
+    /**
+     * returns last pager
+     * @private
+     * @return {Number}
+     */
+    function pagerLast () {
+      return this.pagers[this.pagers.length - 1];
+    }
+
+    /**
+     * gets the visible range of paginators
+     * @return {Array}
+     */
+    OctodLimiter.prototype.getRange = function () {
+      return getRange.call(this);
     }
 
     /**
@@ -510,6 +554,14 @@
      */
     OctodLimiter.prototype.inRange = function (pageNumber) {
       return inRange.call(this, pageNumber);
+    }
+
+    /**
+     * sets page number
+     * @param {Number} pageNumber
+     */
+    OctodLimiter.prototype.setLimit = function (pageNumber) {
+      this.config.currentPage = pageNumber;
     }
 
     // returning constructor
@@ -532,8 +584,7 @@
       },
       paginator: {
         currentPage: 1,
-        limit: 5,
-        pagers: [5],
+        limit: 6,
         visible: true
       },
       visible: true
@@ -603,7 +654,9 @@
      * @return {Array}
      */
     OctodDatagrid.prototype.getPage = function (pageNumber) {
-      this.rows = this.pagination.getPage(pageNumber || this.pagination.config.currentPage || 1);
+      var page = pageNumber || this.pagination.config.currentPage || 1;
+      this.rows = this.pagination.getPage(page);
+      this.paginator.setLimit(page);
       return this.rows;
     }
 
@@ -620,7 +673,9 @@
      * @return {Array}
      */
     OctodDatagrid.prototype.getPages = function () {
-      return this.pagination.getPages();
+      var pages = this.pagination.getPages();
+      this.paginator.getRange();
+      return pages;
     }
 
     /**
@@ -631,7 +686,7 @@
       this.redraw();
       this.pagination = new OctodPagination(this.rows, this.config.pagination);
       this.pagination.getFirstPage();
-      this.paginator = new OctodLimiter(this.getPagers(), this.config.paginator);
+      this.paginator = new OctodLimiter(this.pagination.getPages(), this.config.paginator);
       return this;
     };
 
