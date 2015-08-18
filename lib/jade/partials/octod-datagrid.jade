@@ -24,6 +24,7 @@
             select(
               data-ng-blur="cell.change()"
               data-ng-model="cell.model" 
+              data-ng-options="cell.options"
               data-ng-if="cell.editable && cell.type === 'select'" 
               data-od-esc="cell.undo()"
               )

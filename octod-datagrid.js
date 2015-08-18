@@ -173,6 +173,7 @@
       this.clickCallback = config.click || noop;
       this.css = config.css;
       this.childCss = config.childCss;
+      this.options = config.options || '';
       this.editable = config.editable;
       this.hide = config.hide || noop;
       this.key = config.key;
@@ -584,7 +585,7 @@
       },
       paginator: {
         currentPage: 1,
-        limit: 6,
+        limit: 5,
         visible: true
       },
       visible: true
