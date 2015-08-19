@@ -37,7 +37,7 @@
         data-ng-class="{current: datagrid.isCurrentPage(page)}"
         data-ng-click="datagrid.getPage(page)" 
         data-ng-if="datagrid.inRange(page)"
-        data-ng-repeat="page in datagrid.getPages()"
+        data-ng-repeat="page in datagrid.getPaginators()"
         ) {{page}}
       a.btn(data-ng-click="datagrid.getLastPage()") Last
     .ng-pager
