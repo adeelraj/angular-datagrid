@@ -25,18 +25,18 @@ $padding
 .ng-datagrid
   @extend $block
   footer
-    @extend $col-xs-12, $row
+    @extend $col-{$xs}-12, $row
   legend
     @extend $padding
     color: $legend-color
     font-style: italic
   table
-    @extend $col-xs-12
+    @extend $col-{$xs}-12
     border-collapse: collapse
   td
     border: 1px solid $border-color
   th
-    @extend $align-left-xs, $padding, .ng-datagrid td
+    @extend $align-left-{$xs}, $padding, .ng-datagrid td
     color-scheme: $th-background, $th-color
   td input
     @extend $padding
@@ -67,12 +67,12 @@ $padding
     @extends .ng-datagrid.small-cells td input
 
 .ng-pager
-  @extend $col-xs, $col-md-6
+  @extend $col-{$xs}, $col-{$md}-6
   font-size: .8em
   & + &
-    @extend $align-right-md
+    @extend $align-right-{$md}
   .btn
-    @extend $align-center-xs, .ng-datagrid .dont-select
+    @extend $align-center-{$xs}, .ng-datagrid .dont-select
     min-width: 3em
     padding: $grid-padding
     text-decoration: underline
@@ -81,8 +81,8 @@ $padding
     text-decoration: none
 
 .ng-stats
-  @extend $row, $col-xs, $col-xs-12
+  @extend $row, $col-{$xs}, $col-{$xs}-12
   border-top: $ng-stats-border
   padding: $ng-stats-padding
   .stat
-    @extend $col-xs, $col-xs-12, $col-md-4
+    @extend $col-{$xs}, $col-{$xs}-12, $col-{$md}-4

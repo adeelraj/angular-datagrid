@@ -91,6 +91,8 @@
         __default: {
           browsingPage: 'Browsing page',
           browsingPageOf: 'of',
+          loadingError: 'Error while loading datas. Please refresh your browser.',
+          loadingProgress: 'Loading, please wait.',
           totalPages: 'total pages.'
         }
       },
@@ -105,6 +107,11 @@
      */
     this.$get = function () {
       return {
+        addLocal: function (name, config) {
+          var exists = config.locale[name];
+          if (!exists) return config.locale[name] = angular.extend(config.locale.__default, config);
+          config.locale[name] = angular.extend(exists, config);
+        },
         /**
          * returns debug querystring. A simple hack to avoid caching
          * @static
@@ -688,7 +695,7 @@
      * wrapping OctodPagination.prototype.getPagers
      * @return {Array}
      */
-    OctodDatagrid.prototype.getPages = function () {
+    OctodDatagrid.prototype.getPaginators = function () {
       var pages = this.pagination.getPages();
       this.paginator.getRange();
       return pages;

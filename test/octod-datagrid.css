@@ -78,10 +78,10 @@
 }
 .ng-datagrid td,
 .ng-datagrid th {
-  border: 1px solid #b5b5b5;
+  border: 1px solid #dfdfdf;
 }
 .ng-datagrid th {
-  background-color: #e1e1e1;
+  background-color: #e8e8e8;
   color: #313131;
 }
 .ng-datagrid td input {
@@ -121,6 +121,6 @@
   text-decoration: none;
 }
 .ng-stats {
-  border-top: 1px solid #b5b5b5;
+  border-top: 1px solid #dfdfdf;
   padding: 0;
 }
