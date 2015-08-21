@@ -16,12 +16,13 @@
         var config = $attrs.config ? $scope.$eval($attrs.config) : {};
         var rows = $attrs.rows ? $scope.$eval($attrs.rows) : [];
         var schema = $attrs.schema ? $scope.$eval($attrs.schema) : [];
-        $scope.datagrid = new OctodDatagrid(rows, schema, config);
         $scope.datagrid.title = $attrs.datagridTitle ? $scope.$eval($attrs.datagridTitle) : false;
         if ($attrs.rows) {
           $scope.$watch($attrs.rows, function () {
             $scope.datagrid = new OctodDatagrid($scope.$eval($attrs.rows), schema, config);
           });
+        } else {
+          $scope.datagrid = new OctodDatagrid(rows, schema, config);
         }
       },
       restrict: 'E',
@@ -593,7 +594,11 @@
     var __config = {
       ajaxPagination: false,
       http: {
-        get: ''
+        get: '',
+        params: {
+          page: 'page',
+          limit: 'limit'
+        }
       },
       locale: '__default',
       pagination: {
