@@ -38,6 +38,7 @@ gulp.task('make-datagrid', function () {
     'lib/services/Pagination.js',
     'lib/services/Limiter.js',
     'lib/services/Datagrid.js',
+    'lib/services/DatagridAsync.js',
     'lib/$wrapper-end.js'
   ])
   .pipe(concat('octod-datagrid.js'))

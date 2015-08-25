@@ -592,14 +592,6 @@
      * @type {Object}
      */
     var __config = {
-      ajaxPagination: false,
-      http: {
-        get: '',
-        params: {
-          page: 'page',
-          limit: 'limit'
-        }
-      },
       locale: '__default',
       pagination: {
         currentPage: 1,
@@ -859,8 +851,96 @@
      */
     OctodDatagridInit.cache = {};
 
+    OctodDatagridInit.constructor = OctodDatagrid;
+
     // returns OctodDatagridInit constructor
     return OctodDatagridInit;
+  }])
+
+
+  .service('OctodDatagridAsync', ['OctodDatagrid', '$http', function (OctodDatagrid, $http) {
+    function OctodDatagridAsync (rows, schema, config) {
+      OctodDatagrid.constructor.call(this, [], schema, config);
+    };
+
+    function makeQueryobject (pageNumber) {
+      var object = {};
+      object[this.config.ajax.page || 'page'] = pageNumber;
+      object[this.config.ajax.limit || 'limit'] = this.config.pagination.limit;
+      return { params: object };
+    }
+
+    // inheriting prototype methods
+    OctodDatagridAsync.prototype = angular.extend({}, OctodDatagrid.constructor.prototype);
+
+    /**
+     * gets first page async
+     * @return {Array}
+     */
+    OctodDatagridAsync.prototype.getFirstPageAsync = function () {
+      this.getPageAsync(1);
+      return this.getPage();
+    }
+
+    /**
+     * gets last page async
+     * @return {Array}
+     */
+    OctodDatagridAsync.prototype.getLastPageAsync = function () {
+      this.getPageAsync(this.config.ajax.pageCount || 1);
+      return this.getPage();
+    }
+
+    /**
+     * gets a page async
+     * @return {Undefined}
+     */
+    OctodDatagridAsync.prototype.getPageAsync = function (pageNumber) {
+      $http.get(this.config.ajax.api, makeQueryobject.call(this, pageNumber)).success(function (response) {
+        this.config.pagination.rows = new Array(response.pagination.rowsTotal);
+        this.rows = this.rowsCache = response.rows ? response.rows : response;
+        this.redraw();
+      }.bind(this));
+    }
+
+    /**
+     * overrides .prototype.getPage
+     * @param  {Number} pageNumber
+     * @return {Array}
+     */
+    OctodDatagridAsync.prototype.getPage = function (pageNumber) {
+      var page = pageNumber || this.config.currentPage || 1;
+      this.paginator.setLimit(page);
+      return this.rows;
+    }
+
+    /**
+     * ovverrides .prototype.init
+     * @return {OctodDatagrid}
+     */
+    OctodDatagrid.prototype.init = function () {
+      this.pagination = new OctodPagination(this.rows, this.config.pagination);
+      this.pagination.getFirstPageAsync();
+      this.paginator = new OctodLimiter(this.pagination.getPages(), this.config.paginator);
+      return this;
+    };
+
+    // returns OctodDatagridInit constructor
+    function OctodDatagridAsyncInit (rows, schema, config, name) {
+      var instance = new OctodDatagridAsync(rows, schema, config);
+      instance.init();
+      OctodDatagridAsyncInit.cache[name || Date.now()] = instance;
+      return instance;
+    }
+
+    /**
+     * cache object
+     * @static
+     * @type {Object}
+     */
+    OctodDatagridAsyncInit.cache = {};
+
+    return OctodDatagridAsyncInit;
   }])
 
   ;

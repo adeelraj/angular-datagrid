@@ -32,14 +32,14 @@
           //- data-od-enter-kill
   footer(data-ng-show="datagrid.isPaginable()")
     .ng-pager
-      a.btn(data-ng-click="datagrid.getFirstPage()") First
+      a.btn(data-ng-click="datagrid.getFirstPage()" data-ng-bind="datagrid.getTranslated('pageFirst')")
       a.btn(
         data-ng-class="{current: datagrid.isCurrentPage(page)}"
         data-ng-click="datagrid.getPage(page)" 
         data-ng-if="datagrid.inRange(page)"
         data-ng-repeat="page in datagrid.getPaginators()"
         ) {{page}}
-      a.btn(data-ng-click="datagrid.getLastPage()") Last
+      a.btn(data-ng-click="datagrid.getLastPage()" data-ng-bind="datagrid.getTranslated('pageLast')")
     .ng-pager
       a.btn(
         data-ng-class="{current: datagrid.isCurrentPager(limit)}"

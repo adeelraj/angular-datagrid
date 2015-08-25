@@ -10,8 +10,10 @@
   </head>
   <body>
     <section class="demo">
-      <h1 class="align-center">Octod Datagrid.</h1>
-      <octod-datagrid datagrid-title="main.grid.title" rows="main.grid.rows" schema="main.grid.schema" config="main.grid.config"></octod-datagrid>
+      <h1 class="align-center title">Octod Datagrid.</h1>
+      <octod-datagrid datagrid-title="main.grid.title" rows="main.grid.rows" schema="main.grid.schema" config="main.grid.config">
+        <pager></pager>
+      </octod-datagrid>
     </section>
     <style media="screen">
       body{
@@ -22,6 +24,9 @@
         max-width: 1024px;
         padding: 1em 2em;
         margin: 0 auto;
+      }
+      .demo .title {
+        margin: .5em 0 .8em;
       }
       td .btn {
         border-radius: 4em;

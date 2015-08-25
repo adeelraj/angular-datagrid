@@ -6,7 +6,7 @@
     'octod.datagrid'
   ]);
 
-  app.controller('TestController', function ($filter) {
+  app.controller('TestController', function ($filter, $http) {
     var controller = this;
     var counter = 1;
 
@@ -28,6 +28,11 @@
     this.grid = {};
 
     this.grid.config = {
+      ajax: {
+        api: 'test.json',
+        page: 'foo',
+        limit: 'bar'
+      },
       smallCells: true
     }
 
@@ -84,6 +89,10 @@
     }];
 
     this.grid.title = 'Testing out this datagrid.';
+
+    // $http.get('test.json').success(function (response) {
+    //   this.grid.rows = response.rows;
+    // }.bind(this))
   });
 
   app.directive('body', function () {
