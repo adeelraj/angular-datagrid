@@ -1,0 +1,25 @@
+footer(data-ng-show="datagrid.isPaginable()")
+  ng-transclude
+  .ng-pager
+    a.btn(data-ng-click="datagrid.getFirstPage()" data-ng-bind="datagrid.getTranslated('pageFirst')")
+    a.btn(
+      data-ng-class="{current: datagrid.isCurrentPage(page)}"
+      data-ng-click="datagrid.setPage(page)" 
+      data-ng-if="datagrid.inRange(page)"
+      data-ng-repeat="page in datagrid.getPaginators()"
+      ) {{page}}
+    a.btn(data-ng-click="datagrid.getLastPage()" data-ng-bind="datagrid.getTranslated('pageLast')")
+  .ng-pager
+    span(data-ng-bind="datagrid.getTranslated('rowsPerPage')") 
+    | &nbsp;
+    a.btn(
+      data-ng-class="{current: datagrid.isCurrentPager(limit)}"
+      data-ng-click="datagrid.setLimit(limit)" 
+      data-ng-repeat="limit in datagrid.getPagers()"
+      ) {{limit}}
+  .ng-stats(data-ng-if="datagrid.showStats()")
+    .stat {{datagrid.getTranslated('browsingPage')}} 
+      strong {{datagrid.pageDisplay()}} 
+      | {{datagrid.getTranslated('browsingPageOf')}} 
+      strong {{datagrid.pageDisplayTotal()}} 
+      | {{datagrid.getTranslated('totalPages')}}

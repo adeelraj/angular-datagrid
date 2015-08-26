@@ -1,54 +1,5 @@
 .ng-cloak.ng-datagrid(data-ng-class="{ 'small-cells': 'datagrid.config.smallCells' }")
   legend(data-ng-if="datagrid.title" data-ng-bind="datagrid.title")
-  table(data-ng-show="datagrid.isVisible()")
-    thead
-      tr
-        th(data-ng-class="item.css" data-ng-repeat="item in datagrid.schema" data-od-style="item.getStyle()")
-          span(data-ng-bind="item.name")
-    tbody
-      tr(data-ng-repeat="row in datagrid.getPage()")
-        td(
-          data-ng-class="cell.getCss()" 
-          data-ng-click="cell.click()" 
-          data-ng-repeat="cell in row.cells" 
-          data-od-style="item.getStyle()")
-          span(data-ng-hide="cell.ishidden()" data-ng-if="!cell.editable" data-ng-bind="cell.getValue()" data-ng-class="cell.getChildCss()")
-          label(data-ng-class="cell.getChildCss()" data-ng-hide="cell.ishidden()" data-ng-if="cell.editable")
-            input(
-              data-ng-blur="cell.change()" 
-              data-ng-if="cell.editable && cell.type !== 'select'" 
-              data-ng-model="cell.model" 
-              data-od-esc="cell.undo()"
-              type="{{cell.type}}"
-              )
-            select(
-              data-ng-blur="cell.change()"
-              data-ng-model="cell.model" 
-              data-ng-options="cell.options"
-              data-ng-if="cell.editable && cell.type === 'select'" 
-              data-od-esc="cell.undo()"
-              )
-          //- data-od-enter="cell.change()" 
-          //- data-od-enter-kill
-  footer(data-ng-show="datagrid.isPaginable()")
-    .ng-pager
-      a.btn(data-ng-click="datagrid.getFirstPage()" data-ng-bind="datagrid.getTranslated('pageFirst')")
-      a.btn(
-        data-ng-class="{current: datagrid.isCurrentPage(page)}"
-        data-ng-click="datagrid.getPage(page)" 
-        data-ng-if="datagrid.inRange(page)"
-        data-ng-repeat="page in datagrid.getPaginators()"
-        ) {{page}}
-      a.btn(data-ng-click="datagrid.getLastPage()" data-ng-bind="datagrid.getTranslated('pageLast')")
-    .ng-pager
-      a.btn(
-        data-ng-class="{current: datagrid.isCurrentPager(limit)}"
-        data-ng-click="datagrid.setLimit(limit)" 
-        data-ng-repeat="limit in datagrid.getPagers()"
-        ) {{limit}}
-    .ng-stats(data-ng-if="datagrid.showStats()")
-      .stat {{datagrid.getTranslated('browsingPage')}} 
-        strong {{datagrid.pageDisplay()}} 
-        | {{datagrid.getTranslated('browsingPageOf')}} 
-        strong {{datagrid.pageDisplayTotal()}} 
-        | {{datagrid.getTranslated('totalPages')}}
+  include _table
+  include _footer
+  include _no-results

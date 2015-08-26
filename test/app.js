@@ -28,10 +28,20 @@
     this.grid = {};
 
     this.grid.config = {
-      ajax: {
-        api: 'test.json',
+      api: {
+        load: 'test.json',
         page: 'foo',
-        limit: 'bar'
+        limit: 'bar',
+      },
+      onPageSelect: function (pageNumber, limit) {
+        $http.get('test.json', {
+          params: {page: pageNumber, limit: limit || 10}
+        }).success(function (response) {
+          this.setPagers(response.pagination.pagers)
+          this.setRows(response.rows);
+          this.setPageCount(response.pagination.rowsTotal);
+          this.getPage(pageNumber);
+        }.bind(this))
       },
       smallCells: true
     }
@@ -90,9 +100,6 @@
 
     this.grid.title = 'Testing out this datagrid.';
 
-    // $http.get('test.json').success(function (response) {
-    //   this.grid.rows = response.rows;
-    // }.bind(this))
   });
 
   app.directive('body', function () {
