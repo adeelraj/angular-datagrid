@@ -37,16 +37,17 @@
         $http.get('test.json', {
           params: {page: pageNumber, limit: limit || 10}
         }).success(function (response) {
-          this.setPagers(response.pagination.pagers)
-          this.setRows(response.rows);
           this.setPageCount(response.pagination.rowsTotal);
+          this.setRows(response.rows);
+          this.setPagers(response.pagination.pagers);
           this.getPage(pageNumber);
-        }.bind(this))
+          this.init();
+        }.bind(this));
       },
       smallCells: true
     }
 
-    this.grid.rows = makerows(600);
+    // this.grid.rows = makerows(600);
 
     this.array = 'often,sometimes,never'.split(',');
 

@@ -15,9 +15,9 @@ var config = {
 while (array.length < config.rowsTotal) {
   array.push({
     key1: array.length,
-    key2: array.length,
+    key2: new Date,
     key3: array.length,
-    key4: array.length
+    key4: Math.floor(Math.random() * ((4 - 1) + 1))
   });
 };
 
@@ -26,8 +26,13 @@ app.get('/test.json', function (request, response) {
   var page = request.query.page;
   var mapped = [];
 
+  if (!limit || !page) return response.status(400).json([]);
+
+  var min = (page - 1) * limit;
+  var max = min + parseInt(limit);
+
   array.forEach(function (item, index) {
-    if (index >= (page - 1) * limit && index <= page + limit) {
+    if (index >= min && index < max) {
       mapped.push(item);
     };
   });

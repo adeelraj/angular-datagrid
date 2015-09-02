@@ -19,7 +19,7 @@
         $scope.datagrid.title = $attrs.datagridTitle ? $scope.$eval($attrs.datagridTitle) : false;
         if ($attrs.rows) {
           $scope.$watch($attrs.rows, function () {
-            $scope.datagrid = new OctodDatagrid($scope.$eval($attrs.rows), schema, config);
+            $scope.datagrid = new OctodDatagrid($scope.$eval($attrs.rows) || [], schema, config);
           });
         } else {
           $scope.datagrid = new OctodDatagrid(rows, schema, config);
@@ -385,7 +385,7 @@
       this.config.limit = config.limit || 10;
       this.config.pagers = config.pagers || [10, 20, 30];
       this.rows = rows || [];
-      this.rowsLength = rows.length;
+      this.rowsLength = config.pageCount || rows.length;
     }
 
     /**
@@ -743,7 +743,7 @@
      * inits OctodDatagrid
      * @return {OctodDatagrid}
      */
-    OctodDatagrid.prototype.init = function (forced) {
+    OctodDatagrid.prototype.init = function () {
       this.redraw();
       this.pagination = new OctodPagination(this.rows, this.config.pagination);
       this.pagination.getFirstPage();
@@ -854,7 +854,7 @@
      * @param {Number} count page count
      */
     OctodDatagrid.prototype.setPageCount = function (count) {
-      if (count && typeof count === 'number') this.pagination.rowsLength = count;
+      if (count && typeof count === 'number') this.config.pageCount = count;
     }
 
     /**
