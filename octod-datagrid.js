@@ -407,7 +407,7 @@
     /**
      * returns the current rows set
      * @param  {number} pageNumber the page number, of course
-     * @return {[type]}            [description]
+     * @return {Array}
      */
     OctodPagination.prototype.getPage = function (pageNumber) {
       var pages = [];

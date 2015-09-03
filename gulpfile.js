@@ -2,7 +2,10 @@
 
 var autoprefixer = require('gulp-autoprefixer');
 var concat = require('gulp-concat');
+var fs = require("fs");
 var gulp = require('gulp');
+var gulpJsdoc2md = require("gulp-jsdoc-to-markdown");
+var gutil = require("gulp-util");
 var jade = require('gulp-jade');
 var ridecss = require('ride-css');
 var stylus = require('gulp-stylus');
@@ -14,6 +17,16 @@ gulp.task('default', ['jade', 'make-datagrid', 'stylus'], function () {
     'octod-datagrid.html'
   ])
   .pipe(gulp.dest('./test'));
+});
+
+gulp.task('docs', function() {
+  gulp.src('./octod-datagrid.js')
+  .pipe(concat('docs.md'))
+  .pipe(gulpJsdoc2md({ template: fs.readFileSync('./lib/readme.hbs', 'utf8') }))
+  .on('error', function(err){
+    gutil.log('Building docs failed due to:', err.message);
+  })
+  .pipe(gulp.dest('docs'));
 });
 
 gulp.task('jade', function () {
