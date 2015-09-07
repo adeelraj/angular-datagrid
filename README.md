@@ -21,9 +21,15 @@ First of all, you need to call the script into your html page after after angula
 In your main angular.js app file add `ng-datagrid` as a *dependency*
 
 ```js
-app.module('myModule', [
+var app = angular.module('myModule', [
   'ng-datagrid'
 ]);
+
+app.config(function ($angularDatagridProvider) {
+  // this function will tell the directive where the html file is located
+  // assuming that you've installed angular datagrid using bower you'll have to write
+  $angularDatagridProvider.setPartialsFolder('/bower_components/angular-datagrid/');
+})
 ```
 
 In your controller, you'll need to configure your datagrid behaviour
@@ -33,8 +39,7 @@ app.controller('MyController', function () {
   this.grid = {};
   // this object can store grid instance configuration
   this.grid.config = {};
-  // you can get them async
-  // docs TODO
+  // you can also get them async, docs will come soonish®
   this.grid.rows = [{
     firstColumn: 123,
     secondColumn: 'foo'
