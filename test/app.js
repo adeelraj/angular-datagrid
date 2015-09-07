@@ -37,11 +37,12 @@
         $http.get('test.json', {
           params: {page: pageNumber, limit: limit || 10}
         }).success(function (response) {
-          this.setPageCount(response.pagination.rowsTotal);
-          this.setRows(response.rows);
-          this.setPagers(response.pagination.pagers);
-          this.getPage(pageNumber);
-          this.init();
+          this.asyncInit({
+            pageNumber: pageNumber,
+            pagers: response.pagination.pagers,
+            rows: response.rows,
+            rowsTotal: response.pagination.rowsTotal
+          });
         }.bind(this));
       },
       smallCells: true

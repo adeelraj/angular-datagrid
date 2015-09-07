@@ -385,7 +385,7 @@
       this.config.limit = config.limit || 10;
       this.config.pagers = config.pagers || [10, 20, 30];
       this.rows = rows || [];
-      this.rowsLength = config.pageCount || rows.length;
+      this.rowsLength = config.rowsLength || rows.length;
     }
 
     /**
@@ -465,7 +465,7 @@
      * @return {Boolean}
      */
     OctodPagination.prototype.isCurrentPage = function (pageNumber) {
-      return this.config.currentPage === pageNumber;
+      return (this.config.$currentPage || this.config.currentPage) === pageNumber;
     }
 
     /**
@@ -532,7 +532,7 @@
     function getRange () {
       var limit = Math.floor(this.config.limit / 2);
       var isEven = this.config.limit % 2 === 0;
-      var currentPage = this.config.currentPage;
+      var currentPage = this.config.$currentPage || this.config.currentPage;
       var firstpage = currentPage - limit;
       var lastpage = currentPage + limit;
       if (isEven) lastpage = lastpage - 1;
@@ -590,7 +590,7 @@
      * sets page number
      * @param {Number} pageNumber
      */
-    OctodLimiter.prototype.setLimit = function (pageNumber) {
+    OctodLimiter.prototype.setCurrentPage = function (pageNumber) {
       this.config.currentPage = pageNumber;
     }
 
@@ -673,6 +673,20 @@
      */
     OctodDatagrid.Row = OctodRow;
 
+
+    OctodDatagrid.prototype.asyncInit = function (config) {
+      var pageNumber = config.pageNumber || this.config.pagination.currentPage;
+      var pagers = config.pagers || this.config.pagination.pagers;
+      var rows = config.rows || [];
+      var rowsTotal = config.rowsTotal;
+      this.getPage(pageNumber);
+      this.setRows(rows);
+      this.setPageCount(rowsTotal);
+      this.setPagers(pagers);
+      this.setCurrentPage(pageNumber);
+      this.init();
+    }
+
     /**
      * wrapper for OctodPagination.prototype.getFirstPage
      * @return {Undefined}
@@ -700,7 +714,7 @@
     OctodDatagrid.prototype.getPage = function (pageNumber) {
       var page = pageNumber || this.pagination.config.currentPage || 1;
       this.rows = this.pagination.getPage(page);
-      this.paginator.setLimit(page);
+      this.paginator.setCurrentPage(page);
       return this.rows;
     }
 
@@ -799,7 +813,7 @@
      * @return {Number}
      */
     OctodDatagrid.prototype.pageDisplay = function () {
-      return this.config.pagination.currentPage;
+      return this.pagination.config.$currentPage || this.config.pagination.currentPage;
     }
 
     /**
@@ -822,6 +836,14 @@
         this.rows.push(rowInstance);
       }, this);
     };
+
+
+    OctodDatagrid.prototype.setCurrentPage = function (pageNumber) {
+      if (pageNumber && typeof pageNumber === 'number') {
+        this.paginator.config.$currentPage = pageNumber;
+        this.pagination.config.$currentPage = pageNumber;
+      }
+    }
 
     /**
      * sets a new limit for pagination.
@@ -854,7 +876,7 @@
      * @param {Number} count page count
      */
     OctodDatagrid.prototype.setPageCount = function (count) {
-      if (count && typeof count === 'number') this.config.pageCount = count;
+      if (count && typeof count === 'number') this.config.pagination.rowsLength = count;
     }
 
     /**
