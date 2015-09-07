@@ -3,7 +3,7 @@
 
   var angular = this.angular;
   var app = angular.module('octod.test', [
-    'octod.datagrid'
+    'ng-datagrid'
   ]);
 
   app.controller('TestController', function ($filter, $http) {
@@ -111,9 +111,9 @@
     }
   });
 
-  app.config(function ($octodDatagridProvider) {
-    $octodDatagridProvider.debug(true);
-    $octodDatagridProvider.setPartialsFolder('/partials');
+  app.config(function ($angularDatagridProvider) {
+    $angularDatagridProvider.debug(true);
+    $angularDatagridProvider.setPartialsFolder('/partials');
   })
 
 }).call(this);

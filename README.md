@@ -1,2 +1,2 @@
-OctoD's angular datagrid
+Angular datagrid
 ========================

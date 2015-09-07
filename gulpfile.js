@@ -12,15 +12,15 @@ var stylus = require('gulp-stylus');
 
 gulp.task('default', ['jade', 'make-datagrid', 'stylus'], function () {
   gulp.src([
-    'octod-datagrid.css',
-    'octod-datagrid.js',
-    'octod-datagrid.html'
+    'angular-datagrid.css',
+    'angular-datagrid.js',
+    'angular-datagrid.html'
   ])
   .pipe(gulp.dest('./test'));
 });
 
 gulp.task('docs', function() {
-  gulp.src('./octod-datagrid.js')
+  gulp.src('./angular-datagrid.js')
   .pipe(concat('docs.md'))
   .pipe(gulpJsdoc2md({ template: fs.readFileSync('./lib/readme.hbs', 'utf8') }))
   .on('error', function(err){
@@ -30,7 +30,7 @@ gulp.task('docs', function() {
 });
 
 gulp.task('jade', function () {
-  gulp.src('lib/jade/partials/octod-datagrid.jade')
+  gulp.src('lib/jade/partials/angular-datagrid.jade')
   .pipe(jade({
     basedir: __dirname
   }))
@@ -41,11 +41,11 @@ gulp.task('jade', function () {
 gulp.task('make-datagrid', function () {
   gulp.src([
     'lib/$wrapper-start.js',
-    'lib/directives/octod-datagrid.js',
-    'lib/directives/octod-enter.js',
-    'lib/directives/octod-esc.js',
-    'lib/directives/octod-style.js',
-    'lib/providers/$octodDatagrid.js',
+    'lib/directives/angular-datagrid.js',
+    'lib/directives/angular-enter.js',
+    'lib/directives/angular-esc.js',
+    'lib/directives/angular-style.js',
+    'lib/providers/$angularDatagrid.js',
     'lib/services/Cell.js',
     'lib/services/Row.js',
     'lib/services/Pagination.js',
@@ -54,12 +54,12 @@ gulp.task('make-datagrid', function () {
     'lib/services/DatagridAsync.js',
     'lib/$wrapper-end.js'
   ])
-  .pipe(concat('octod-datagrid.js'))
+  .pipe(concat('angular-datagrid.js'))
   .pipe(gulp.dest(__dirname))
 });
 
 gulp.task('stylus', function () {
-  gulp.src('lib/stylus/octod-datagrid.styl')
+  gulp.src('lib/stylus/angular-datagrid.styl')
   .pipe(stylus({
     use: [ridecss()]
   }))

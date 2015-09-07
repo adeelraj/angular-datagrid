@@ -3,10 +3,10 @@
 
   var angular = this.angular;
 
-  angular.module('octod.datagrid', [])
+  angular.module('ng-datagrid', [])
 
 
-  .directive('octodDatagrid', ['OctodDatagrid', '$octodDatagrid', function (OctodDatagrid, $octodDatagrid) {
+  .directive('ngDatagrid', ['AngularDatagrid', '$angularDatagrid', function (AngularDatagrid, $angularDatagrid) {
     return {
       controller: ['$scope', function ($scope) {
         this.datagrid = $scope.$new();
@@ -19,16 +19,16 @@
         $scope.datagrid.title = $attrs.datagridTitle ? $scope.$eval($attrs.datagridTitle) : false;
         if ($attrs.rows) {
           $scope.$watch($attrs.rows, function () {
-            $scope.datagrid = new OctodDatagrid($scope.$eval($attrs.rows) || [], schema, config);
+            $scope.datagrid = new AngularDatagrid($scope.$eval($attrs.rows) || [], schema, config);
           });
         } else {
-          $scope.datagrid = new OctodDatagrid(rows, schema, config);
+          $scope.datagrid = new AngularDatagrid(rows, schema, config);
         }
       },
       restrict: 'E',
       replace: true,
       templateUrl: function () {
-        return $octodDatagrid.partialsPath +'/octod-datagrid.html'+ $octodDatagrid.getDebugQuerystring();
+        return $angularDatagrid.partialsPath +'/angular-datagrid.html'+ $angularDatagrid.getDebugQuerystring();
       },
       transclude: true
     }
@@ -81,7 +81,7 @@
   })
 
 
-  .provider('$octodDatagrid', function () {
+  .provider('$angularDatagrid', function () {
     /**
      * configuration Object
      * @static
@@ -184,7 +184,7 @@
   })
 
 
-  .service('OctodCell', function () {
+  .service('AngularCell', function () {
     /**
      * noop function. It does nothing lol
      * @private
@@ -193,11 +193,11 @@
     function noop () {};
 
     /**
-     * OctodCell constructor
+     * AngularCell constructor
      * @param {Object} config configuration object
-     * @param {Object} row    is the parent row (happens only when instanced by OctodRow constructor)
+     * @param {Object} row    is the parent row (happens only when instanced by AngularRow constructor)
      */
-    function OctodCell (config, row) {
+    function AngularCell (config, row) {
       this.changeCallback = config.change || noop;
       this.clickCallback = config.click || noop;
       this.css = config.css;
@@ -219,7 +219,7 @@
      * calls change event on the cell instanced
      * @return {Undefined}
      */
-    OctodCell.prototype.change = function () {
+    AngularCell.prototype.change = function () {
       this.changeCallback.call(this, this.$row);
       this.updateValue();
     }
@@ -228,7 +228,7 @@
      * click event
      * @return {Undefined}
      */
-    OctodCell.prototype.click = function () {
+    AngularCell.prototype.click = function () {
       this.clickCallback.call(this, this.$row);
     }
 
@@ -236,7 +236,7 @@
      * returns css or calls the css function
      * @return {String}
      */
-    OctodCell.prototype.getCss = function () {
+    AngularCell.prototype.getCss = function () {
       return typeof this.css === 'function' ? this.css.call(this, this.$row) : this.css;
     }
 
@@ -244,7 +244,7 @@
      * returns child element css or calls the css function
      * @return {String}
      */
-    OctodCell.prototype.getChildCss = function () {
+    AngularCell.prototype.getChildCss = function () {
       return typeof this.childCss === 'function' ? this.childCss.call(this, this.$row) : this.childCss;
     }
 
@@ -252,7 +252,7 @@
      * returns cell instance style
      * @return {Any}
      */
-    OctodCell.prototype.getStyle = function () {
+    AngularCell.prototype.getStyle = function () {
       return this.style;
     }
 
@@ -261,7 +261,7 @@
      * returns value or calls the value function
      * @return {Any}
      */
-    OctodCell.prototype.getValue = function () {
+    AngularCell.prototype.getValue = function () {
       this.model = this.valueCache = typeof this.value === 'function' ? this.value.call(this, this.$row) : this.value;
       return this.model;
     }
@@ -270,7 +270,7 @@
      * returns true if the cell content is hidden
      * @return {Boolean}
      */
-    OctodCell.prototype.ishidden = function () {
+    AngularCell.prototype.ishidden = function () {
       return this.hide.call(this, this.$row);
     }
 
@@ -278,7 +278,7 @@
      * restore values to previous value
      * @return {Undefined}
      */
-    OctodCell.prototype.restoreValue = function () {
+    AngularCell.prototype.restoreValue = function () {
       this.value = this.model = this.valueCache;
     }
 
@@ -286,7 +286,7 @@
      * exits from edit mode and resets model to previous value
      * @return {Undefined}
      */
-    OctodCell.prototype.undo = function () {
+    AngularCell.prototype.undo = function () {
       this.editable = false;
       this.model = this.value;
     }
@@ -295,22 +295,22 @@
      * updates the value
      * @return {Undefined}
      */
-    OctodCell.prototype.updateValue = function () {
+    AngularCell.prototype.updateValue = function () {
       this.value = this.model;
     }
 
-    // returning OctodCell constructor
-    return OctodCell;
+    // returning AngularCell constructor
+    return AngularCell;
   })
 
 
-  .service('OctodRow', ['OctodCell', function (OctodCell) {
+  .service('AngularRow', ['AngularCell', function (AngularCell) {
     /**
      * Row constructor
      * @param {Object} row    the row Object
      * @param {Object} schema datagrids' schema Object
      */
-    function OctodRow (row, schema) {
+    function AngularRow (row, schema) {
       this.cells = [];
       this.row = row;
       this.rowCache = row;
@@ -321,9 +321,9 @@
      * builds cells array
      * @return {Undefined}
      */
-    OctodRow.prototype.buildCells = function () {
+    AngularRow.prototype.buildCells = function () {
       this.schema.forEach(function (schemaObject) {
-        var cellInstance = new OctodCell(schemaObject, this.row);
+        var cellInstance = new AngularCell(schemaObject, this.row);
         cellInstance.value = typeof schemaObject.value === 'function' ? schemaObject.value(this.row[schemaObject.key]) : this.row[schemaObject.key];
         this.cells.push(cellInstance);
       }, this);
@@ -333,7 +333,7 @@
      * empties cells set
      * @return {Undefined}
      */
-    OctodRow.prototype.empty = function () {
+    AngularRow.prototype.empty = function () {
       this.cells = [];
     }
 
@@ -341,7 +341,7 @@
      * restores the row to the original status
      * @return {Undefined}
      */
-    OctodRow.prototype.restore = function () {
+    AngularRow.prototype.restore = function () {
       this.row = this.rowCache;
       this.buildCells();
     }
@@ -350,18 +350,18 @@
      * updates original object with the current values
      * @return {Undefined}
      */
-    OctodRow.prototype.update = function () {
+    AngularRow.prototype.update = function () {
       this.cells.forEach(function (cellObject) {
         this.row[cellObject.key] = cellObject.value;
       }, this);
     }
 
-    // returns OctodRow
-    return OctodRow;
+    // returns AngularRow
+    return AngularRow;
   }])
 
 
-  .service('OctodPagination', function () {
+  .service('AngularPagination', function () {
     /**
      * returns the type
      * @param  {Any} object the variable you wish to check
@@ -373,13 +373,13 @@
     }
 
     /**
-     * OctodPagination constructor
+     * AngularPagination constructor
      * @param {Array} rows   the rows set
      * @param {Object} config pagination config
      */
-    function OctodPagination (rows, config) {
+    function AngularPagination (rows, config) {
       if (!typeOf(rows) === '[object Array]')
-        throw new TypeError('OctodPagination requires a rows:[object Array], provided'+ typeOf(rows));
+        throw new TypeError('AngularPagination requires a rows:[object Array], provided'+ typeOf(rows));
 
       this.config = config || {};
       this.config.limit = config.limit || 10;
@@ -392,7 +392,7 @@
      * returns first page.
      * @return {Array}
      */
-    OctodPagination.prototype.getFirstPage = function () {
+    AngularPagination.prototype.getFirstPage = function () {
       return this.getPage(1);
     }
 
@@ -400,7 +400,7 @@
      * returns last page.
      * @return {Array}
      */
-    OctodPagination.prototype.getLastPage = function () {
+    AngularPagination.prototype.getLastPage = function () {
       return this.getPage(this.getPageCount());
     }
 
@@ -409,7 +409,7 @@
      * @param  {number} pageNumber the page number, of course
      * @return {Array}
      */
-    OctodPagination.prototype.getPage = function (pageNumber) {
+    AngularPagination.prototype.getPage = function (pageNumber) {
       var pages = [];
       if (!this.hasPages()) return pages;
       if (pageNumber) this.config.currentPage = pageNumber;
@@ -424,7 +424,7 @@
      * returns the number of pages available
      * @return {number} the number of pages
      */
-    OctodPagination.prototype.getPageCount = function () {
+    AngularPagination.prototype.getPageCount = function () {
       return this.config.pageCount = Math.ceil(this.rowsLength / this.config.limit);
     };
 
@@ -432,7 +432,7 @@
      * returns config.pagers
      * @return {Array:number}
      */
-    OctodPagination.prototype.getPagers = function () {
+    AngularPagination.prototype.getPagers = function () {
       return this.config.pagers;
     }
 
@@ -440,7 +440,7 @@
      * returns an array with page numbers
      * @return {Array:number}
      */
-    OctodPagination.prototype.getPages = function () {
+    AngularPagination.prototype.getPages = function () {
       if (!this.hasPages()) return;
       var pages = [];
       var page = 1;
@@ -455,7 +455,7 @@
      * returs if the pagination system could have more than 0 pages
      * @return {Boolean}
      */
-    OctodPagination.prototype.hasPages = function () {
+    AngularPagination.prototype.hasPages = function () {
       return this.getPageCount() > 0;
     }
 
@@ -464,7 +464,7 @@
      * @param  {Number}  pageNumber
      * @return {Boolean}
      */
-    OctodPagination.prototype.isCurrentPage = function (pageNumber) {
+    AngularPagination.prototype.isCurrentPage = function (pageNumber) {
       return (this.config.$currentPage || this.config.currentPage) === pageNumber;
     }
 
@@ -473,7 +473,7 @@
      * @param  {Number}  limit
      * @return {Boolean}
      */
-    OctodPagination.prototype.isCurrentLimit = function (limit) {
+    AngularPagination.prototype.isCurrentLimit = function (limit) {
       return this.config.limit === limit;
     }
 
@@ -482,7 +482,7 @@
      * @param {Number} limit
      * @return {Boolean} true if the new limit is set
      */
-    OctodPagination.prototype.setLimit = function (limit) {
+    AngularPagination.prototype.setLimit = function (limit) {
       if (!limit in this.config.pagers) return false;
       this.config.currentPage = 1;
       this.config.limit = limit;
@@ -493,22 +493,22 @@
      * sets a page
      * @param {number} pageNumber the page number
      */
-    OctodPagination.prototype.setPage = function (pageNumber) {
+    AngularPagination.prototype.setPage = function (pageNumber) {
       if (this.hasPages()) this.config.currentPage = pageNumber;
     }
 
-    // retuns OctodPagination
-    return OctodPagination;
+    // retuns AngularPagination
+    return AngularPagination;
   })
 
 
-  .service('OctodLimiter', function () {
+  .service('AngularLimiter', function () {
     /**
-     * OctodLimiter constructor
+     * AngularLimiter constructor
      * @param {Array}   pagers    the set of pagers
      * @param {Object}  config    paginator config object
      */
-    function OctodLimiter (pagers, config) {
+    function AngularLimiter (pagers, config) {
       this.config = config || {};
       this.pagers = pagers || [];
       this.pagersVisible = [];
@@ -573,7 +573,7 @@
      * gets the visible range of paginators
      * @return {Array}
      */
-    OctodLimiter.prototype.getRange = function () {
+    AngularLimiter.prototype.getRange = function () {
       return getRange.call(this);
     }
 
@@ -582,7 +582,7 @@
      * @param  {Number} pageNumber the page number
      * @return {Boolean}
      */
-    OctodLimiter.prototype.inRange = function (pageNumber) {
+    AngularLimiter.prototype.inRange = function (pageNumber) {
       return inRange.call(this, pageNumber);
     }
 
@@ -590,16 +590,16 @@
      * sets page number
      * @param {Number} pageNumber
      */
-    OctodLimiter.prototype.setCurrentPage = function (pageNumber) {
+    AngularLimiter.prototype.setCurrentPage = function (pageNumber) {
       this.config.currentPage = pageNumber;
     }
 
     // returning constructor
-    return OctodLimiter;
+    return AngularLimiter;
   })
 
 
-  .service('OctodDatagrid', ['$octodDatagrid', 'OctodRow', 'OctodCell', 'OctodPagination', 'OctodLimiter', '$http', function ($octodDatagrid, OctodRow, OctodCell, OctodPagination, OctodLimiter, $http) {
+  .service('AngularDatagrid', ['$angularDatagrid', 'AngularRow', 'AngularCell', 'AngularPagination', 'AngularLimiter', '$http', function ($angularDatagrid, AngularRow, AngularCell, AngularPagination, AngularLimiter, $http) {
     /**
      * Config defaults
      * @private
@@ -625,17 +625,17 @@
     };
 
     /**
-     * OctodDatagrid constructor
+     * AngularDatagrid constructor
      * @param {Array} rows   the rows set
      * @param {Object} schema datagrids' schema
      * @param {Object} config datagrids' config
      */
-    function OctodDatagrid (rows, schema, config) {
+    function AngularDatagrid (rows, schema, config) {
       this.rows = [];
       this.rowsCache = rows;
       this.schema = schema;
       this.config = angular.extend(__config, config);
-      this.config.translations = $octodDatagrid.getLocale(config.locale);
+      this.config.translations = $angularDatagrid.getLocale(config.locale);
     };
 
     function queryobject(pageNumber) {
@@ -648,33 +648,33 @@
     /**
      * Cell constructor
      * @static
-     * @type {OctodCell}
+     * @type {AngularCell}
      */
-    OctodDatagrid.Cell = OctodCell;
+    AngularDatagrid.Cell = AngularCell;
 
     /**
      * Limiter constructor
      * @static
-     * @type {OctodLimiter}
+     * @type {AngularLimiter}
      */
-    OctodDatagrid.Limiter = OctodLimiter;
+    AngularDatagrid.Limiter = AngularLimiter;
 
     /**
      * Pagination constructor
      * @static
-     * @type {OctodPagination}
+     * @type {AngularPagination}
      */
-    OctodDatagrid.Pagination = OctodPagination;
+    AngularDatagrid.Pagination = AngularPagination;
 
     /**
      * Row constructor
      * @static
-     * @type {OctodRow}
+     * @type {AngularRow}
      */
-    OctodDatagrid.Row = OctodRow;
+    AngularDatagrid.Row = AngularRow;
 
 
-    OctodDatagrid.prototype.asyncInit = function (config) {
+    AngularDatagrid.prototype.asyncInit = function (config) {
       var pageNumber = config.pageNumber || this.config.pagination.currentPage;
       var pagers = config.pagers || this.config.pagination.pagers;
       var rows = config.rows || [];
@@ -688,30 +688,30 @@
     }
 
     /**
-     * wrapper for OctodPagination.prototype.getFirstPage
+     * wrapper for AngularPagination.prototype.getFirstPage
      * @return {Undefined}
      */
-    OctodDatagrid.prototype.getFirstPage = function () {
+    AngularDatagrid.prototype.getFirstPage = function () {
       this.pagination.getFirstPage();
       (this.config.onPageSelect || angular.noop).call(this, 1);
     }
 
     /**
-     * wrapper for OctodPagination.prototype.getLastPage
+     * wrapper for AngularPagination.prototype.getLastPage
      * @return {Undefined}
      */
-    OctodDatagrid.prototype.getLastPage = function () {
+    AngularDatagrid.prototype.getLastPage = function () {
       this.pagination.getLastPage();
       (this.config.onPageSelect || angular.noop).call(this, this.pagination.getPageCount());
     }
 
     /**
-     * wrapping and managing OctodPagination.prototype.getPage
+     * wrapping and managing AngularPagination.prototype.getPage
      * returns a set of paginated rows
      * @param  {number} pageNumber the pageNumber you are requiring
      * @return {Array}
      */
-    OctodDatagrid.prototype.getPage = function (pageNumber) {
+    AngularDatagrid.prototype.getPage = function (pageNumber) {
       var page = pageNumber || this.pagination.config.currentPage || 1;
       this.rows = this.pagination.getPage(page);
       this.paginator.setCurrentPage(page);
@@ -719,18 +719,18 @@
     }
 
     /**
-     * returns OctodPagination.config.pagers
+     * returns AngularPagination.config.pagers
      * @return {Array:number}
      */
-    OctodDatagrid.prototype.getPagers = function () {
+    AngularDatagrid.prototype.getPagers = function () {
       return this.pagination.getPagers();
     }
 
     /**
-     * wrapping OctodPagination.prototype.getPagers
+     * wrapping AngularPagination.prototype.getPagers
      * @return {Array}
      */
-    OctodDatagrid.prototype.getPaginators = function () {
+    AngularDatagrid.prototype.getPaginators = function () {
       var pages = this.pagination.getPages();
       this.paginator.getRange();
       return pages;
@@ -740,7 +740,7 @@
      * returns rowsCache
      * @return {Array}
      */
-    OctodDatagrid.prototype.getRowsAll = function () {
+    AngularDatagrid.prototype.getRowsAll = function () {
       return this.rowsCache;
     }
 
@@ -749,19 +749,19 @@
      * @param  {string} key the translation key
      * @return {string}
      */
-    OctodDatagrid.prototype.getTranslated = function (key) {
+    AngularDatagrid.prototype.getTranslated = function (key) {
       return this.config.translations[key] || '';
     }
 
     /**
-     * inits OctodDatagrid
-     * @return {OctodDatagrid}
+     * inits AngularDatagrid
+     * @return {AngularDatagrid}
      */
-    OctodDatagrid.prototype.init = function () {
+    AngularDatagrid.prototype.init = function () {
       this.redraw();
-      this.pagination = new OctodPagination(this.rows, this.config.pagination);
+      this.pagination = new AngularPagination(this.rows, this.config.pagination);
       this.pagination.getFirstPage();
-      this.paginator = new OctodLimiter(this.pagination.getPages(), this.config.paginator);
+      this.paginator = new AngularLimiter(this.pagination.getPages(), this.config.paginator);
       return this;
     };
 
@@ -770,25 +770,25 @@
      * @param  {Number} pageNumber the page number
      * @return {Boolean}
      */
-    OctodDatagrid.prototype.inRange = function (pageNumber) {
+    AngularDatagrid.prototype.inRange = function (pageNumber) {
       return this.paginator.inRange(pageNumber);
     }
 
     /**
-     * wraps OctodPagination.prototype.isCurrentPage method
+     * wraps AngularPagination.prototype.isCurrentPage method
      * @param  {Number}  pageNumber
      * @return {Boolean}
      */
-    OctodDatagrid.prototype.isCurrentPage = function (pageNumber) {
+    AngularDatagrid.prototype.isCurrentPage = function (pageNumber) {
       return this.pagination.isCurrentPage(pageNumber);
     }
 
     /**
-     * wraps OctodPagination.prototype.isCurrentLimit method
+     * wraps AngularPagination.prototype.isCurrentLimit method
      * @param  {Number}  limit
      * @return {Boolean}
      */
-    OctodDatagrid.prototype.isCurrentPager = function (limit) {
+    AngularDatagrid.prototype.isCurrentPager = function (limit) {
       return this.pagination.isCurrentLimit(limit);
     }
 
@@ -796,7 +796,7 @@
      * returns if the datagrid has pagination controls
      * @return {Boolean}
      */
-    OctodDatagrid.prototype.isPaginable = function () {
+    AngularDatagrid.prototype.isPaginable = function () {
       return this.config.pagination.visible;
     }
 
@@ -804,7 +804,7 @@
      * returns if the datagrid is visible
      * @return {Boolean}
      */
-    OctodDatagrid.prototype.isVisible = function () {
+    AngularDatagrid.prototype.isVisible = function () {
       return this.config.visible;
     }
 
@@ -812,7 +812,7 @@
      * outputs current page number
      * @return {Number}
      */
-    OctodDatagrid.prototype.pageDisplay = function () {
+    AngularDatagrid.prototype.pageDisplay = function () {
       return this.pagination.config.$currentPage || this.config.pagination.currentPage;
     }
 
@@ -820,7 +820,7 @@
      * outputs total pages number
      * @return {Number}
      */
-    OctodDatagrid.prototype.pageDisplayTotal = function () {
+    AngularDatagrid.prototype.pageDisplayTotal = function () {
       return this.pagination.getPageCount();
     }
 
@@ -828,17 +828,17 @@
      * redraws datagrid rows
      * @return {Undefined}
      */
-    OctodDatagrid.prototype.redraw = function () {
+    AngularDatagrid.prototype.redraw = function () {
       this.rows = [];
       this.rowsCache.forEach(function (rowObject) {
-        var rowInstance = new OctodRow(rowObject, this.schema);
+        var rowInstance = new AngularRow(rowObject, this.schema);
         rowInstance.buildCells();
         this.rows.push(rowInstance);
       }, this);
     };
 
 
-    OctodDatagrid.prototype.setCurrentPage = function (pageNumber) {
+    AngularDatagrid.prototype.setCurrentPage = function (pageNumber) {
       if (pageNumber && typeof pageNumber === 'number') {
         this.paginator.config.$currentPage = pageNumber;
         this.pagination.config.$currentPage = pageNumber;
@@ -849,7 +849,7 @@
      * sets a new limit for pagination.
      * @param {Number} limit
      */
-    OctodDatagrid.prototype.setLimit = function (limit) {
+    AngularDatagrid.prototype.setLimit = function (limit) {
       if (this.pagination.setLimit(limit)) this.init();
     }
 
@@ -857,7 +857,7 @@
      * sets current page
      * @param {Number} pageNumber
      */
-    OctodDatagrid.prototype.setPage = function (pageNumber) {
+    AngularDatagrid.prototype.setPage = function (pageNumber) {
       this.getPage(pageNumber);
       (this.config.onPageSelect || angular.noop).call(this, pageNumber, this.config.pagination.limit);
     }
@@ -866,7 +866,7 @@
      * hardly set pagers
      * @param {Array|Number} pagers the array of numbers or the number
      */
-    OctodDatagrid.prototype.setPagers = function (pagers) {
+    AngularDatagrid.prototype.setPagers = function (pagers) {
       pagers = Array.isArray(pagers) ? pagers : [pagers];
       this.config.pagination.pagers = pagers;
     }
@@ -875,16 +875,16 @@
      * hardly set page count
      * @param {Number} count page count
      */
-    OctodDatagrid.prototype.setPageCount = function (count) {
+    AngularDatagrid.prototype.setPageCount = function (count) {
       if (count && typeof count === 'number') this.config.pagination.rowsLength = count;
     }
 
     /**
      * sets rows
      * @param {Array} rows
-     * @return {OctodDatagrid}
+     * @return {AngularDatagrid}
      */
-    OctodDatagrid.prototype.setRows = function (rows) {
+    AngularDatagrid.prototype.setRows = function (rows) {
       this.rowsCache = rows;
       this.init();
       return this;
@@ -894,7 +894,7 @@
      * resets schema object
      * @param {object} schemaObject   datagrid's schema
      */
-    OctodDatagrid.prototype.setSchema = function (schemaObject) {
+    AngularDatagrid.prototype.setSchema = function (schemaObject) {
       if (Object.prototype.toString.call(schemaObject) !== '[object Object]') return;
       this.schema = schemaObject;
       this.init();
@@ -904,16 +904,16 @@
      * returns if the stats are visible or not
      * @return {Boolean}
      */
-    OctodDatagrid.prototype.showStats = function () {
+    AngularDatagrid.prototype.showStats = function () {
       return this.config.showStats;
     }
 
-    // returns OctodDatagridInit constructor
-    function OctodDatagridInit (rows, schema, config, name) {
-      var instance = new OctodDatagrid(rows, schema, config);
+    // returns AngularDatagridInit constructor
+    function AngularDatagridInit (rows, schema, config, name) {
+      var instance = new AngularDatagrid(rows, schema, config);
       instance.init(true);
       if (typeof config.onPageSelect === 'function') config.onPageSelect.call(instance, 1);
-      OctodDatagridInit.cache[name || Date.now()] = instance;
+      AngularDatagridInit.cache[name || Date.now()] = instance;
       return instance;
     }
 
@@ -922,16 +922,16 @@
      * @static
      * @type {Object}
      */
-    OctodDatagridInit.cache = {};
+    AngularDatagridInit.cache = {};
 
     /**
      * exports the constructor
-     * @type {OctodDatagrid}
+     * @type {AngularDatagrid}
      */
-    OctodDatagridInit.constructor = OctodDatagrid;
+    AngularDatagridInit.constructor = AngularDatagrid;
 
-    // returns OctodDatagridInit constructor
-    return OctodDatagridInit;
+    // returns AngularDatagridInit constructor
+    return AngularDatagridInit;
   }])
 
   ;
