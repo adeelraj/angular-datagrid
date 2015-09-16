@@ -59,7 +59,7 @@ app.controller('MyController', function () {
     name: 'Second column'
   }];
   // you can of course give it a title
-  this.grid.title = 'Hello world! I\'s a datagrid';
+  this.grid.title = 'Hello world! I\'m a datagrid';
 });
 ```
 
@@ -117,6 +117,6 @@ app.controller('MyController', ['$filter', function ($filter) {
     }
   }];
   // you can of course give it a title
-  this.grid.title = 'Hello world! I\'s a datagrid';
+  this.grid.title = 'Hello world! I\'m a datagrid';
 }]);
 ```
