@@ -120,3 +120,38 @@ app.controller('MyController', ['$filter', function ($filter) {
   this.grid.title = 'Hello world! I\'m a datagrid';
 }]);
 ```
+
+### Retrieving paged data from the server.
+
+```js
+app.controller('MyController', ['$filter', function ($filter) {
+  // the grid object
+  this.grid = {};
+  // setting up the grid config
+  this.grid.config = {
+    // this event is triggered each time the grid changes page
+    // two params are passed to the function: pageNumber and limit
+    onPageSelect: function (pageNumber, limit) {
+      // you can use a normal $http service to retrieve the data
+      $http.get('test.json', {
+        // assuming your restful accepts a page and limit parameter in querystring
+        params: {page: pageNumber, limit: limit || 10}
+      }).success(function (response) {
+        // you are telling the datagrid to redraw by passing an object
+        this.asyncInit({
+          // the page passed by the function
+          pageNumber: pageNumber,
+          // if your response has a pagination object and a pagers array [required]
+          pagers: response.pagination.pagers,
+          // if your response serves the grid rows in a grid property [required]
+          rows: response.rows,
+          // if your response has a pagination object and a rowsTotal number [required]
+          rowsTotal: response.pagination.rowsTotal
+        });
+      }.bind(this));
+    }
+  };
+  // the schema
+  this.grid.schema = [ /* the schema array of object */ ];
+}]);
+```
