@@ -6,9 +6,12 @@ var fs = require("fs");
 var gulp = require('gulp');
 var gulpJsdoc2md = require("gulp-jsdoc-to-markdown");
 var gutil = require("gulp-util");
+var path = require('path');
 var jade = require('gulp-jade');
+var rename = require('gulp-rename');
 var ridecss = require('ride-css');
 var stylus = require('gulp-stylus');
+var uglify = require('gulp-uglify');
 
 gulp.task('default', ['jade', 'make-datagrid', 'stylus'], function () {
   gulp.src([
@@ -55,7 +58,14 @@ gulp.task('make-datagrid', function () {
     'lib/$wrapper-end.js'
   ])
   .pipe(concat('angular-datagrid.js'))
-  .pipe(gulp.dest(__dirname))
+  .pipe(gulp.dest(__dirname));
+
+  gulp.src(path.join(__dirname, 'angular-datagrid.js'))
+  .pipe(uglify())
+  .pipe(rename({
+    suffix: '-min'
+  }))
+  .pipe(gulp.dest(__dirname));
 });
 
 gulp.task('stylus', function () {
