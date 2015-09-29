@@ -279,7 +279,7 @@
      * @return {Undefined}
      */
     AngularCell.prototype.restoreValue = function () {
-      this.value = this.model = this.valueCache;
+      this.value = this.model = angular.copy(this.valueCache);
     }
 
     /**
@@ -342,7 +342,7 @@
      * @return {Undefined}
      */
     AngularRow.prototype.restore = function () {
-      this.row = this.rowCache;
+      this.row = angular.copy(this.rowCache);
       this.buildCells();
     }
 
