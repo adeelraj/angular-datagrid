@@ -1,6 +1,6 @@
 {
   "name": "angular-datagrid",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "another angular datagrid",
   "main": "index.js",
   "directories": {

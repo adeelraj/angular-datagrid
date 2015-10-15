@@ -77,7 +77,6 @@
       key: 'key2',
       name: 'Second field',
       value: function (value) {
-        console.log(arguments);
         return $filter('date')(value, 'dd-MM-yyyy');
       }
     }, {
@@ -99,6 +98,12 @@
       key: 'key4',
       name: 'Variable css',
       type: 'button'
+    }, {
+      key: 'sadasd',
+      forceHtml: true,
+      value: function () {
+        return '<a href="#">this is some html content!</a>';
+      }
     }];
 
     this.grid.title = 'Testing out this datagrid.';
