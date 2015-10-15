@@ -210,7 +210,7 @@
       this.name = config.name;
       this.style = config.style;
       this.type = config.type;
-      this.value = null;
+      this.value = config.value || null;
       // accessible when clicking
       this.$row = row;
     }
@@ -262,7 +262,8 @@
      * @return {Any}
      */
     AngularCell.prototype.getValue = function () {
-      this.model = this.valueCache = typeof this.value === 'function' ? this.value.call(this, this.$row) : this.value;
+      var cellValue = this.$row[this.key];
+      this.model = this.valueCache = typeof this.value === 'function' ? this.value.call(this, cellValue, this.$row) : cellValue;
       return this.model;
     }
 
@@ -324,7 +325,7 @@
     AngularRow.prototype.buildCells = function () {
       this.schema.forEach(function (schemaObject) {
         var cellInstance = new AngularCell(schemaObject, this.row);
-        cellInstance.value = typeof schemaObject.value === 'function' ? schemaObject.value(this.row[schemaObject.key]) : this.row[schemaObject.key];
+        // cellInstance.value = typeof schemaObject.value === 'function' ? schemaObject.value(this.row[schemaObject.key]) : this.row[schemaObject.key];
         this.cells.push(cellInstance);
       }, this);
     }
