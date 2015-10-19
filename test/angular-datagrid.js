@@ -334,6 +334,7 @@
     AngularRow.prototype.buildCells = function () {
       this.schema.forEach(function (schemaObject) {
         var cellInstance = new AngularCell(schemaObject, this.row);
+        cellInstance.$$row = this;
         cellInstance.getValue();
         this.cells.push(cellInstance);
       }, this);
