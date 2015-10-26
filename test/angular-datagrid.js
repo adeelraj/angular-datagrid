@@ -106,7 +106,7 @@
           loadingError: 'Errore durante il caricamento dei dati. Prego ricaricare la pagina.',
           loadingProgress: 'Sto caricando, aspetta ancora un pochino.',
           pageFirst: 'Prima pagina',
-          pageLast: 'Seconda pagina',
+          pageLast: 'Ultima pagina',
           rowsPerPage: 'Righe per pagina',
           totalPages: 'pagine totali.'
         }
