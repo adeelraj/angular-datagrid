@@ -1,0 +1,9 @@
+.ng-pager
+  a.btn(data-ng-click="datagrid.getFirstPage()" data-ng-bind="datagrid.getTranslated('pageFirst')")
+  a.btn(
+    data-ng-class="{current: datagrid.isCurrentPage(page)}"
+    data-ng-click="datagrid.setPage(page)" 
+    data-ng-if="datagrid.inRange(page)"
+    data-ng-repeat="page in datagrid.getPaginators()"
+    ) {{page}}
+  a.btn(data-ng-click="datagrid.getLastPage()" data-ng-bind="datagrid.getTranslated('pageLast')")

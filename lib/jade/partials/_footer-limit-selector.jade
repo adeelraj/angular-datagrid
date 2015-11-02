@@ -1,0 +1,14 @@
+.ng-pager
+  span(data-ng-bind="datagrid.getTranslated('rowsPerPage')") 
+  | &nbsp;
+  a.btn(
+    data-ng-class="{current: datagrid.isCurrentPager(limit)}"
+    data-ng-click="datagrid.setLimit(limit)" 
+    data-ng-repeat="limit in datagrid.getPagers()"
+    ) {{limit}}
+.ng-stats(data-ng-if="datagrid.showStats()")
+  .stat {{datagrid.getTranslated('browsingPage')}} 
+    strong {{datagrid.pageDisplay()}} 
+    | {{datagrid.getTranslated('browsingPageOf')}} 
+    strong {{datagrid.pageDisplayTotal()}} 
+    | {{datagrid.getTranslated('totalPages')}}
