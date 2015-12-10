@@ -228,6 +228,9 @@ export module IAngularDatagrid {
     value?: Function | any;
   }
 
+  /**
+   * datagrid cell interface
+   */
   export interface IAngularDatagridCell extends IAngularDatagridCellOptions {
     // methods
     constructor(config: IAngularDatagridCellOptions);
@@ -467,6 +470,13 @@ export module IAngularDatagrid {
      * @param {number} pageNumber
      */
     setPage(pageNumber: number): void;
+  }
+
+  export interface IAngularDatagridProvider {
+    $get: Function;
+    debug: (debugmode: boolean) => {};
+    localeAdd: (localeName: string, config) => {};
+    setPartialsFolder: (folder: string) => {};
   }
 
   export interface IAngularDatagridRowSchema extends Array<IAngularDatagridCellOptions> {}
