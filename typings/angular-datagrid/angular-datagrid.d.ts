@@ -22,29 +22,128 @@ export module IAngularDatagrid {
      * sets new grid params
      */
     asyncInit(config: { pageNumber?: number, pagers?: Array<number>, rows: Array<T> });
+    /**
+     * gets first page
+     * @return {Array<IAngularDatagridRow<T>>}
+     */
     getFirstPage(): Array<IAngularDatagridRow<T>>;
+    /**
+     * gets last page
+     * @return {Array<IAngularDatagridRow<T>>}
+     */
     getLastPage(): Array<IAngularDatagridRow<T>>;
+    /**
+     * gets page {pageNumber}
+     * @param  {number}                         pageNumber the page you want to get
+     * @return {Array<IAngularDatagridRow<T>>}
+     */
     getPage(pageNumber: number): Array<IAngularDatagridRow<T>>;
+    /**
+     * gets pagers
+     * @return {Array<number>}
+     */
     getPagers(): Array<number>;
+    /**
+     * gets paginators
+     * @return {Array<number>}
+     */
     getPaginators(): Array<number>;
+    /**
+     * gets all rows
+     * @return {Array} [description]
+     */
     getRowsAll(): Array<IAngularDatagridRow<T>>;
+    /**
+     * get a translated word from config.translations object
+     * @param  {string} key the keyword
+     * @return {string}     the translated keyword
+     */
     getTranslated(key: string): string;
+    /**
+     * initializes the grid
+     */
     init(): void;
+    /**
+     * returns if the passed page number is in the current range of visible paginators items
+     * @param  {number}  pageNumber
+     * @return {boolean}
+     */
     inRange(pageNumber: number): boolean;
+    /**
+     * returns if is the current page
+     * @param  {number}  pageNumber
+     * @return {boolean}
+     */
     isCurrentPage(pageNumber: number): boolean;
+    /**
+     * returns if is the current pager
+     * @param  {number}  limit
+     * @return {boolean}
+     */
     isCurrentPager(limit: number): boolean;
+    /**
+     * returns if is paginable
+     * @return {boolean}
+     */
     isPaginable(): boolean;
+    /**
+     * returns if is visible
+     * @return {boolean}
+     */
     isVisible(): boolean;
+    /**
+     * returns the current page number
+     * @return {number}
+     */
     pageDisplay(): number;
+    /**
+     * returns the number of total pages
+     * @return {number}
+     */
     pageDisplayTotal(): number;
+    /**
+     * redraws rows
+     */
     redraw(): void;
+    /**
+     * sets current page without processing the rows set
+     * @param {number} pageNumber
+     */
     setCurrentPage(pageNumber: number): void;
+    /**
+     * sets a new limit
+     * @param {number} limit
+     */
     setLimit(limit: number): void;
+    /**
+     * sets current page processing the rows set
+     * @param {number} pageNumber
+     */
     setPage(pageNumber: number): void;
+    /**
+     * sets the page count
+     * @param {number} count
+     */
     setPageCount(count: number): void;
+    /**
+     * sets the pagers
+     * @param {number} pagers
+     */
     setPagers(pagers: number): void;
+    /**
+     * sets the rows
+     * @param {Array<T>} rows
+     */
     setRows(rows: Array<T>): void;
+    /**
+     * sets a new schema
+     * @param {IAngularDatagridRowSchema} schemaObject
+     */
     setSchema(schemaObject: IAngularDatagridRowSchema): void;
+    /**
+     * returns if you can display the pagination stats
+     * @return {boolean}
+     */
     showStats(): boolean;
   }
 
@@ -210,7 +309,75 @@ export module IAngularDatagrid {
   }
 
   export interface IAngularDatagridOptions {
-
+    /**
+     * current locale
+     * @type {string}
+     */
+    locale?: string;
+    /**
+     * invoked on each page change
+     * @type {Function}
+     */
+    onPageSelect?: Function;
+    /**
+     * pagination object (used for paginating rows)
+     */
+    pagination?: {
+      /**
+       * current page
+       * @type {number}
+       */
+      currentPage?: number,
+      /**
+       * rows per page
+       * @type {number}
+       */
+      limit?: number,
+      /**
+       * pagers. Let you to choose how many rows per page you can render
+       * @type {Array<number>}
+       */
+      pagers?: Array<number>,
+      /**
+       * returs if the pagination is visible
+       * @type {boolean}
+       */
+      visible?: boolean
+    }
+    /**
+     * paginator object
+     */
+    paginator?: {
+      /**
+       * current page
+       * @type {number}
+       */
+      currentPage?: number,
+      /**
+       * limits how many pagers you can see
+       * @type {number}
+       */
+      limit?: number,
+      /**
+       * returns if the pagers are visible
+       * @type {boolean}
+       */
+      visible?: boolean
+    }
+    /**
+     * shows/hides pagination stats
+     * @type {boolean}
+     */
+    showStats?: boolean
+    /**
+     * translation object
+     */
+    translations?: {}
+    /**
+     * determines if the grid instance is visible or not
+     * @type {boolean}
+     */
+    visible?: boolean
   }
 
   export interface IAngularDatagridPaginationConfig {
@@ -324,7 +491,9 @@ export module IAngularDatagrid {
      * @type {TSchema}
      */
     schema: IAngularDatagridRowSchema;
-    // methods
+    /**
+     * constructor
+     */
     constructor(row: T, schema: IAngularDatagridRowSchema);
     /**
      * instanciates the cells
