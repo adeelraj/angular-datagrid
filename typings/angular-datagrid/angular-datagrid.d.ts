@@ -1,22 +1,20 @@
 /**
- * IAngularDatagrid module
+ * AngularDatagrid module
  * available interfaces
- * 		IAngularDatagridCellOptions
- *   	IAngularDatagridCell
- *    IAngularDatagridLimiter
- *    IAngularDatagridPaginationConfig
- *    IAngularDatagridPagination
- *    IAngularDatagridRowSchema
- *    IAngularDatagridRow
+ * 		IGridCellOptions
+ *   	IGridCell
+ *    IGridLimiter
+ *    IGridPaginationConfig
+ *    IGridPagination
+ *    IGridRowSchema
+ *    IGridRow
  */
-export module IAngularDatagrid {
+export module AngularDatagrid {
   /**
    * angular datagrid interface
    * @requires T interface for rows array
    */
-  export interface IAngularDatagrid<T> {
-    constructor(rows: Array<T>, schema: IAngularDatagridRowSchema, config: IAngularDatagridOptions);
-
+  export interface IGrid<T> {
     /**
      * callbable inside a click/change event
      * sets new grid params
@@ -24,20 +22,20 @@ export module IAngularDatagrid {
     asyncInit(config: { pageNumber?: number, pagers?: Array<number>, rows: Array<T> });
     /**
      * gets first page
-     * @return {Array<IAngularDatagridRow<T>>}
+     * @return {Array<IGridRow<T>>}
      */
-    getFirstPage(): Array<IAngularDatagridRow<T>>;
+    getFirstPage(): Array<IGridRow<T>>;
     /**
      * gets last page
-     * @return {Array<IAngularDatagridRow<T>>}
+     * @return {Array<IGridRow<T>>}
      */
-    getLastPage(): Array<IAngularDatagridRow<T>>;
+    getLastPage(): Array<IGridRow<T>>;
     /**
      * gets page {pageNumber}
      * @param  {number}                         pageNumber the page you want to get
-     * @return {Array<IAngularDatagridRow<T>>}
+     * @return {Array<IGridRow<T>>}
      */
-    getPage(pageNumber: number): Array<IAngularDatagridRow<T>>;
+    getPage(pageNumber: number): Array<IGridRow<T>>;
     /**
      * gets pagers
      * @return {Array<number>}
@@ -52,7 +50,7 @@ export module IAngularDatagrid {
      * gets all rows
      * @return {Array} [description]
      */
-    getRowsAll(): Array<IAngularDatagridRow<T>>;
+    getRowsAll(): Array<IGridRow<T>>;
     /**
      * get a translated word from config.translations object
      * @param  {string} key the keyword
@@ -137,9 +135,9 @@ export module IAngularDatagrid {
     setRows(rows: Array<T>): void;
     /**
      * sets a new schema
-     * @param {IAngularDatagridRowSchema} schemaObject
+     * @param {IGridRowSchema} schemaObject
      */
-    setSchema(schemaObject: IAngularDatagridRowSchema): void;
+    setSchema(schemaObject: IGridRowSchema): void;
     /**
      * returns if you can display the pagination stats
      * @return {boolean}
@@ -150,7 +148,7 @@ export module IAngularDatagrid {
   /**
    * this interface describes how a cell should be configured
    */
-  export interface IAngularDatagridCellOptions {
+  export interface IGridCellOptions {
     /**
      * invoked on the change event bound to the cell input/select element
      * @type {Function}
@@ -173,9 +171,9 @@ export module IAngularDatagrid {
     childCss?: string;
     /**
      * circular reference
-     * @type {IAngularDatagridCellOptions}
+     * @type {IGridCellOptions}
      */
-    options?: IAngularDatagridCellOptions;
+    options?: IGridCellOptions;
     /**
      * enables/disables inline editing for the current cell
      * @default false
@@ -231,9 +229,8 @@ export module IAngularDatagrid {
   /**
    * datagrid cell interface
    */
-  export interface IAngularDatagridCell extends IAngularDatagridCellOptions {
+  export interface IGridCell extends IGridCellOptions {
     // methods
-    constructor(config: IAngularDatagridCellOptions);
     /**
      * invoked on cell change
      */
@@ -286,12 +283,11 @@ export module IAngularDatagrid {
     updateValue(): void;
   }
 
-  export interface IAngularDatagridLimiter {
-    config: IAngularDatagridPaginationConfig;
+  export interface IGridLimiter {
+    config: IGridPaginationConfig;
     pagers: Array<any>;
     pagersVisible: Array<number>;
     // methods
-    constructor(pagers, config);
     /**
      * returns limiter range
      * @return {Array<number>}
@@ -311,7 +307,7 @@ export module IAngularDatagrid {
     setCurrentPage(pageNumber: number);
   }
 
-  export interface IAngularDatagridOptions {
+  export interface IGridOptions {
     /**
      * current locale
      * @type {string}
@@ -383,7 +379,7 @@ export module IAngularDatagrid {
     visible?: boolean
   }
 
-  export interface IAngularDatagridPaginationConfig {
+  export interface IGridPaginationConfig {
     /**
      * current limit
      * @type {number}
@@ -395,15 +391,15 @@ export module IAngularDatagrid {
     pagers?: Array<number>;
   }
 
-  export interface IAngularDatagridPagination<T> {
+  export interface IGridPagination<T> {
     /**
      * pagination config
-     * @type {IAngularDatagridPaginationConfig}
+     * @type {IGridPaginationConfig}
      */
-    config: IAngularDatagridPaginationConfig;
+    config: IGridPaginationConfig;
     /**
      * pagination rows
-     * @type {Array<IAngularDatagridRow>}
+     * @type {Array<IGridRow>}
      */
     rows: Array<T>;
     /**
@@ -414,18 +410,18 @@ export module IAngularDatagrid {
     // methods
     /**
      * gets first page
-     * @return {Array<IAngularDatagridRow>} a set of rows
+     * @return {Array<IGridRow>} a set of rows
      */
     getFirstPage(): Array<T>;
     /**
      * gets last page
-     * @return {Array<IAngularDatagridRow>} a set of rows
+     * @return {Array<IGridRow>} a set of rows
      */
     getLastPage(): Array<T>;
     /**
      * gets page {pageNumber}
      * @param  {number}                     pageNumber the page you are requesting
-     * @return {Array<IAngularDatagridRow>}            a set of rows
+     * @return {Array<IGridRow>}            a set of rows
      */
     getPage(pageNumber: number): Array<T>;
     /**
@@ -472,20 +468,20 @@ export module IAngularDatagrid {
     setPage(pageNumber: number): void;
   }
 
-  export interface IAngularDatagridProvider {
+  export interface IGridProvider {
     $get: Function;
     debug: (debugmode: boolean) => {};
     localeAdd: (localeName: string, config) => {};
     setPartialsFolder: (folder: string) => {};
   }
 
-  export interface IAngularDatagridRowSchema extends Array<IAngularDatagridCellOptions> {}
+  export interface IGridRowSchema extends Array<IGridCellOptions> {}
 
-  export interface IAngularDatagridRow<T> {
+  export interface IGridRow<T> {
     /**
-     * an array of IAngularDatagridCell;
+     * an array of IGridCell;
      */
-    cells: Array<IAngularDatagridCell>;
+    cells: Array<IGridCell>;
     /**
      * current row object
      * @type {T}
@@ -500,11 +496,7 @@ export module IAngularDatagrid {
      * datagrid schema object
      * @type {TSchema}
      */
-    schema: IAngularDatagridRowSchema;
-    /**
-     * constructor
-     */
-    constructor(row: T, schema: IAngularDatagridRowSchema);
+    schema: IGridRowSchema;
     /**
      * instanciates the cells
      */
