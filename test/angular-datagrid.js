@@ -18,7 +18,7 @@
         var schema = $attrs.schema ? $scope.$eval($attrs.schema) : [];
         $scope.datagrid.title = $attrs.datagridTitle ? $scope.$eval($attrs.datagridTitle) : false;
         if ($attrs.rows) {
-          $scope.$watch($attrs.rows, function () {
+          $scope.$watchCollection($attrs.rows, function () {
             $scope.datagrid = new AngularDatagrid($scope.$eval($attrs.rows) || [], schema, config);
           });
         } else {
@@ -27,6 +27,7 @@
       },
       restrict: 'E',
       replace: true,
+      scope: true,
       templateUrl: function () {
         return $angularDatagrid.partialsPath +'/angular-datagrid.html'+ $angularDatagrid.getDebugQuerystring();
       },
