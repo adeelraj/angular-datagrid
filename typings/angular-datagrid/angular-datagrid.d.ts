@@ -9,7 +9,7 @@
  *    IGridRowSchema
  *    IGridRow
  */
-export module AngularDatagrid {
+export module angular.datagrid {
   /**
    * angular datagrid interface
    * @requires T interface for rows array
