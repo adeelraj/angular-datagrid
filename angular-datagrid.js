@@ -202,6 +202,7 @@
       this.changeCallback = config.change || noop;
       this.clickCallback = config.click || noop;
       this.css = config.css;
+      this.colspan = config.colspan;
       this.childCss = config.childCss;
       this.options = config.options || '';
       this.editable = config.editable;
@@ -212,6 +213,7 @@
       this.name = config.name;
       this.style = config.style;
       this.type = config.type;
+      this.rowspan = config.rowspan;
       this.value = config.value || null;
       // accessible when clicking
       this.$row = row;

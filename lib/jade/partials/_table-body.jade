@@ -1,10 +1,12 @@
 tbody
   tr(data-ng-repeat="row in datagrid.getPage()")
     td(
+      colspan="{{cell.colspan}}"
       data-ng-class="cell.getCss()" 
       data-ng-click="cell.click()" 
       data-ng-repeat="cell in row.cells" 
-      data-od-style="item.getStyle()")
+      data-od-style="item.getStyle()"
+      rowspan="{{cell.colspan}}")
       span(data-ng-hide="cell.ishidden()" data-ng-if="!cell.editable && !cell.html" data-ng-bind="cell.getValue()" data-ng-class="cell.getChildCss()")
       span(data-ng-hide="cell.ishidden()" data-ng-if="!cell.editable && cell.html" data-ng-bind-html="cell.getHtml()" data-ng-class="cell.getChildCss()")
       label(data-ng-class="cell.getChildCss()" data-ng-hide="cell.ishidden()" data-ng-if="cell.editable")
