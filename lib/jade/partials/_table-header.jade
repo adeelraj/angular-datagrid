@@ -1,4 +1,4 @@
 thead
   tr
-    th(data-ng-class="item.css" data-ng-repeat="item in datagrid.schema" data-od-style="item.getStyle()")
+    th(data-ng-class="item.css" data-ng-click="datagrid.sort(item)" data-ng-repeat="item in datagrid.schema" data-od-style="item.getStyle()")
       span(data-ng-bind="item.name")

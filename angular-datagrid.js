@@ -613,7 +613,7 @@
   })
 
 
-  .service('AngularDatagrid', ['$angularDatagrid', 'AngularRow', 'AngularCell', 'AngularPagination', 'AngularLimiter', '$http', function ($angularDatagrid, AngularRow, AngularCell, AngularPagination, AngularLimiter, $http) {
+  .service('AngularDatagrid', ['$angularDatagrid', 'AngularRow', 'AngularCell', 'AngularPagination', 'AngularLimiter', '$filter', '$http', function ($angularDatagrid, AngularRow, AngularCell, AngularPagination, AngularLimiter, $filter, $http) {
     /**
      * Config defaults
      * @private
@@ -920,6 +920,16 @@
      */
     AngularDatagrid.prototype.showStats = function () {
       return this.config.showStats;
+    }
+
+    /**
+     * sorts rows
+     * @param  {CellSchema} schemaItem
+     */
+    AngularDatagrid.prototype.sort = function (schemaItem) {
+      schemaItem.$sortorder = /^\-/.test(schemaItem.$sortorder) ? schemaItem.key.replace('-', '') : '-'+ schemaItem.key;
+      this.rowsCache = $filter('orderBy')(this.rowsCache, schemaItem.$sortorder)
+      this.init()
     }
 
     // returns AngularDatagridInit constructor
