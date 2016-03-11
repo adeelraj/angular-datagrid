@@ -1,17 +1,21 @@
 {
   "name": "angular-datagrid",
-  "version": "0.3.0",
-  "description": "another angular datagrid",
+  "version": "0.4.0",
+  "description": "Another angular datagrid",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "start": "node ./test/server"
+    "postinstall": "tsd install --resolve --overwrite",
+    "start": "webpack --watch"
   },
   "keywords": [
     "angular",
+    "angularjs",
     "datagrid",
+    "directive",
+    "table",
     "typescript",
     "doge"
   ],
@@ -19,16 +23,6 @@
   "license": "MIT",
   "devDependencies": {
     "express": "^4.13.1",
-    "gulp": "^3.9.0",
-    "gulp-autoprefixer": "^2.3.1",
-    "gulp-concat": "^2.6.0",
-    "gulp-jade": "^1.0.1",
-    "gulp-jsdoc-to-markdown": "^1.1.1",
-    "gulp-rename": "^1.2.2",
-    "gulp-stylus": "^2.0.5",
-    "gulp-typescript": "^2.8.0",
-    "gulp-uglify": "^1.4.1",
-    "gulp-util": "^3.0.6",
     "ride-css": "^1.0.5",
     "ts-loader": "^0.8.1",
     "webpack": "^1.12.14"
